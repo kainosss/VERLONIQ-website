@@ -7,13 +7,15 @@ The website is plain static HTML in the `public/` directory. It needs no framewo
 ```
 public/              ← the only directory Cloudflare publishes
   index.html         website (inline CSS + JavaScript)
+  config.js          Formspree endpoint + Cal.com link (empty = demo mode)
+  privacy.html       privacy policy (draft, noindex)
   404.html           branded "page not found" page (served automatically)
   _headers           security headers + noindex on *.pages.dev
   robots.txt         search-engine rules → points at verloniq.com sitemap
   sitemap.xml        single-page sitemap for https://verloniq.com/
   favicon.svg        browser tab icon
   og-image.png       1200×630 social-share preview
-CLAUDE.md, README.md, DEPLOYMENT.md, UPLOAD_TO_GITHUB.txt, .gitignore
+CLAUDE.md, README.md, DEPLOYMENT.md, INTEGRATIONS.md, UPLOAD_TO_GITHUB.txt, .gitignore
                      ← internal docs, not published
 ```
 
@@ -61,13 +63,14 @@ This applies `_headers` and the 404 page exactly as Pages does. For a quick look
 - [ ] Response headers include `Content-Security-Policy`, `X-Frame-Options: DENY` and (on `*.pages.dev`) `X-Robots-Tag: noindex`.
 - [ ] `/some-missing-page` shows the branded 404 page with status 404.
 - [ ] `/CLAUDE.md` and `/README.md` return 404 (internal docs aren't published).
-- [ ] Interactive demo, mobile menu, FAQ and the demo-mode assessment form behave as expected on a phone.
+- [ ] Interactive demo, mobile menu, FAQ, the enquiry form (demo mode until configured) and the booking panel behave as expected on a phone.
+- [ ] `/privacy` shows the draft privacy policy.
 
 ## 3. Launch checklist (before attaching verloniq.com)
 
 - [ ] Business registration (ABN) and trade-mark checks completed.
-- [ ] Real enquiry form/booking workflow connected, tested end-to-end, with spam protection and consent wording. If it posts to an external service, add that origin to `form-action` / `connect-src` in `public/_headers`.
-- [ ] Privacy policy and terms pages added (as `public/privacy.html` etc.) and linked from the footer, then added to `sitemap.xml`.
+- [ ] Formspree endpoint and Cal.com link set in `public/config.js` (see [`INTEGRATIONS.md`](INTEGRATIONS.md)), and a real test enquiry and booking checked end-to-end. `_headers` already allows `formspree.io`.
+- [ ] Privacy policy (`public/privacy.html`) finalised: placeholders filled, draft notice and `noindex` removed, and `/privacy` added to `sitemap.xml`. Terms page added if needed.
 - [ ] Pricing and service descriptions confirmed by the founder.
 - [ ] Pre-launch banner, "demo mode" labels and footer notice revised **only** once the above are true.
 

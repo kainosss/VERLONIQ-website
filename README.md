@@ -17,7 +17,11 @@ To preview it the way it will be served (root-relative favicon, 404 page), run `
 - Interactive browser-only example that parses a fictional enquiry into reviewable fields (customer, organisation, contact details, category, priority, next action, draft reply)
 - Three sample messages to test different cases; Ctrl/⌘ + Enter runs the demo
 - Pricing (illustrative) and FAQ sections
-- Assessment modal in **demo mode**: **Copy my brief** copies data to your local clipboard only — nothing is sent or stored
+- Enquiry form ready for **Formspree**, with validation, spam traps, a consent checkbox, a privacy notice and success/error messages. It stays in **demo mode** (nothing is sent) until an endpoint is set in `public/config.js`.
+- "Book a free consultation" panel ready for **Cal.com** (30-minute event). It shows a placeholder until a booking URL is set in `public/config.js`.
+- Draft privacy policy at `public/privacy.html`, listing Formspree, Cal.com, Cloudflare and Google Fonts as third-party providers
+
+See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and booking.
 - Subtle reveal-on-scroll, hover and transition effects; all motion is disabled for visitors who prefer reduced motion
 - Keyboard accessibility: skip link, visible focus states, a focus-trapped modal, and Escape to close the menu or modal
 
@@ -25,7 +29,7 @@ To preview it the way it will be served (root-relative favicon, 404 page), run `
 
 - There is **no real AI model**, email inbox, CRM, Make/n8n scenario, lead database or booking platform connected.
 - The enquiry example uses transparent deterministic JavaScript rules; it is a concept demonstration, not a proven automation.
-- The assessment form does not transmit leads. Connect a real consent-based form system before publishing a live business website.
+- The enquiry form does not transmit leads until a Formspree endpoint is configured and tested. Booking stays a placeholder until a Cal.com link is configured.
 - `VERLONIQ` is the current preferred brand concept. Final business, trade mark and domain registrations should still be completed before launch.
 - Remove the concept banner and revise statements only once actual operations, pricing and delivery capabilities are established.
 
