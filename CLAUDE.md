@@ -19,7 +19,7 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 - All contact forms are currently **demo only** and do not transmit leads. Do not make them appear functional without actually wiring, testing and securing a backend/service.
 
 ## Development approach
-- Start with current `index.html` (no build step required).
+- Start with current `index.html` (no build step required). The website lives in `public/` (Cloudflare Pages output directory); keep internal docs like this file outside `public/`.
 - Prefer minimal, reviewable changes over major refactors.
 - Use semantic HTML, accessibility-friendly focus states, appropriate labels, responsive CSS, and browser-tested JavaScript.
 - Don't commit secrets, API keys, credentials, `.env` files, or customer data; the GitHub repository is public.
