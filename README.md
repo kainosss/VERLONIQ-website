@@ -4,9 +4,11 @@ This is a self-contained, responsive static website concept built as a distinct,
 
 ## Preview it locally
 
-Open `index.html` in Chrome, Firefox, Safari or Edge. No installation is needed. Google Fonts require internet; system-font fallbacks are provided.
+The website lives in [`public/`](public/). That is the only directory published to Cloudflare Pages. Internal notes (`CLAUDE.md`, this README, `DEPLOYMENT.md`) stay at the repository root and are not published.
 
-To preview it the way it will be served (root-relative favicon and 404 page), run `python3 -m http.server 8000` in this folder and open http://localhost:8000.
+Open `public/index.html` in Chrome, Firefox, Safari or Edge. No installation is needed. Google Fonts require internet; system-font fallbacks are provided.
+
+To preview it the way it will be served (root-relative favicon, 404 page), run `python3 -m http.server 8000 -d public` and open http://localhost:8000. To also apply the Cloudflare security headers, run `npx wrangler pages dev public`.
 
 ## What works
 
@@ -29,7 +31,7 @@ To preview it the way it will be served (root-relative favicon and 404 page), ru
 
 ## Deployment
 
-The site is prepared for **Cloudflare Pages** (`_headers`, `404.html`, `robots.txt`, `sitemap.xml`, favicon and social-share image). See [`DEPLOYMENT.md`](DEPLOYMENT.md) for preview-deployment steps and the launch checklist. Do not attach `verloniq.com` or use the site for real customer acquisition until the real contact/booking workflow, privacy policy, business details and service terms are in place.
+The site is prepared for **Cloudflare Pages**: no build command, output directory `public`. That directory holds `_headers`, `404.html`, `robots.txt`, `sitemap.xml`, the favicon and the social-share image. See [`DEPLOYMENT.md`](DEPLOYMENT.md) for preview-deployment steps and the launch checklist. Do not attach `verloniq.com` or use the site for real customer acquisition until the real contact/booking workflow, privacy policy, business details and service terms are in place.
 
 ## Suggested next build
 
