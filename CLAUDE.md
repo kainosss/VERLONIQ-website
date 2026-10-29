@@ -12,7 +12,9 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 
 ## Content and business positioning
 - Brand: **VERLONIQ** (not FWDWORK).
-- Positioning: AI automation, business process automation, integrations, and ongoing support for small and mid-sized Australian businesses.
+- Positioning: hybrid consulting + implementation for small and mid-sized Australian businesses — AI and business process automation, system integrations, AI opportunity assessments and workflow consulting, custom internal tools, ongoing support and AI advisory.
+- Customer journey: free 30-minute workflow discovery call → optional paid AI opportunity assessment **or** a direct implementation quote → implementation → optional monthly support/advisory. A paid assessment is never mandatory.
+- Main message: "Find out what your business could automate." Primary CTA: "Book a Free Discovery Call". Don't publish prices or promise savings without evidence.
 - Be honest about what exists. The current demo is local JavaScript rules, **not a real AI integration**.
 - Do not invent customer testimonials, partner endorsements, completed case studies, demonstrated ROI, or promised automations.
 - Pricing is illustrative until the founder confirms offerings and rates.

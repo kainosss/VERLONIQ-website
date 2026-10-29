@@ -1,89 +1,100 @@
-# Enquiry form (Formspree) and consultation booking (Cal.com)
+# Enquiry form (Formspree) and discovery-call booking (Cal.com)
 
-Both integrations are **built but switched off**. They're controlled by one file, [`public/config.js`](public/config.js):
+Both integrations are **built but switched off**. Everything is controlled by one file, [`public/config.js`](public/config.js). None of these values are secrets.
 
-| Setting | Empty (current) | Set to a valid URL |
+| Setting | Empty (current) | Set to a valid value |
 | --- | --- | --- |
-| `formspreeEndpoint` | **Demo mode.** The form validates but sends nothing, shows a "DEMO MODE — NOT CONNECTED" badge, and the pre-launch banner says "Enquiry form in demo mode". | **Live.** Submissions are sent to Formspree and emailed to you. The demo labels disappear. The pre-launch banner stays. |
-| `calBookingUrl` | **Placeholder.** "Book a free consultation" opens a branded panel saying booking isn't connected yet and offers the enquiry form instead. | **Live.** The panel's "Choose a time" button opens your Cal.com event page in a new tab. |
-| `contactEmail` | Not shown. | Shown as a fallback ("…or email sales@verloniq.com") if a form submission fails. |
+| `formspreeEndpoint` | **Demo mode.** The form validates but sends nothing. It shows "DEMO MODE — NOT CONNECTED", the submit button says "Check my details (demo)", and the pre-launch banner says "Enquiry form in demo mode". It never says an enquiry was sent. | **Live.** Submissions go to Formspree, which emails them to you. The demo labels disappear. The pre-launch banner stays. |
+| `calBookingUrl` | **Placeholder.** "Book a Free Discovery Call" opens a panel describing the call, labelled "ONLINE BOOKING NOT YET CONNECTED", and offers the enquiry form instead. No times are shown. | **Live.** The panel's "Choose a time" button opens your Cal.com event page in a new tab. |
+| `contactEmail` | Not shown. | Shown as a fallback ("…or email sales@verloniq.com") if a submission fails. |
+| `turnstileSiteKey` | Off. | Shows Cloudflare Turnstile (an anti-bot check) on the form. Only works once `formspreeEndpoint` is set. |
 
-The site only accepts well-formed values (`https://formspree.io/f/…` and `https://cal.com/…` or `https://cal.eu/…`). Anything else is ignored, and the site stays in demo or placeholder mode with a console warning. None of these values are secrets.
+Anything that isn't in the expected format is ignored, and the site stays in demo or placeholder mode with a console warning. Expected formats: `https://formspree.io/f/…`, `https://cal.com/…` or `https://cal.eu/…`, and a Turnstile site key starting with `0x`.
 
-## How the enquiry form works
+## Enquiry form
 
-- **Fields:** name, business name, email, phone (optional), service of interest, process description, and a required consent checkbox. It also sends a hidden consent timestamp and an email subject line (`New VERLONIQ enquiry: <business>`).
-- **Validation:** inline error messages that screen readers announce. Focus moves to the first problem.
-- **Spam protection:**
-  - A hidden honeypot field (`_gotcha`). Formspree discards submissions that fill it in, and the site doesn't even send them.
-  - A minimum 3-second fill time.
-  - The submit button is disabled while sending.
-  - Formspree's own server-side spam filtering.
-- **Messages:** a success panel (with an offer to book a consultation), Formspree's own validation errors, and a network-failure message.
-- **Security:** `public/_headers` only allows the page to send data to `formspree.io`.
+**Fields sent to Formspree:**
+- `name`, `business`, `email`, `phone` (optional), `industry`, `team_size`, `service`, `message` and `consent`
+- `consent_given_at`, a timestamp
+- `_subject`, set to "New VERLONIQ enquiry: &lt;business&gt;"
+- `_gotcha`, the honeypot
+- `cf-turnstile-response`, only if Turnstile is on
 
-## How booking works
+Nothing else is collected. The automated tests check this exact list.
 
-- "Book a free consultation" opens an on-site panel in the VERLONIQ style: 30 minutes, free, no obligation, and a note that Cal.com handles the booking.
-- "Choose a time" opens your Cal.com event page in a new tab. **No Cal.com code runs on verloniq.com**, and no calendar data passes through the site.
-- Visitors only ever see the open times for that one event type. They never see your calendar, other events or event titles.
+**Protections built into the site:**
+- Inline, screen-reader-friendly validation that moves focus to the first problem.
+- **Honeypot:** a hidden `_gotcha` field. If it's filled in, nothing is sent and the site shows a neutral error, never a fake success.
+- Submissions within 3 seconds of opening the form are held.
+- The submit button is disabled while sending.
+- **Duplicate guard:** sending the identical enquiry again in the same tab is blocked with a clear message. Only a short code is stored in session storage, never the enquiry itself.
+- A 15-second timeout, plus clear messages for Formspree errors and network failures.
+- Optional **Cloudflare Turnstile**, which Formspree supports. Its script loads only when the form is live **and** opened.
+- `public/_headers` only lets the page send data to `formspree.io`, and only lets Turnstile load from `challenges.cloudflare.com`.
+
+## Discovery-call booking
+
+- Every "Book a Free Discovery Call" button opens an on-site panel titled **Free 30-Minute Workflow Discovery Call**. It explains what the call covers and the possible next steps.
+- When live, **Choose a time** opens your Cal.com event page in a new tab. No Cal.com code runs on the site, no availability is shown on the site, and the site never says a booking is confirmed. Cal.com handles confirmation.
+- Visitors only ever see open slots for that one event type. They never see your calendar, other events or event titles.
 
 ---
 
-## What I need from you to activate it
+## What to configure in Formspree
 
-### 1. Formspree (enquiry form)
+1. **Account:** sign up at formspree.io with a VERLONIQ business email address. Turn on two-factor authentication.
+2. **Form:** create a form called "VERLONIQ website enquiries". **Send me its endpoint** (`https://formspree.io/f/xxxxxxxx`).
+3. **Notifications:** set the notification email to **sales@verloniq.com**. Formspree sends a verification email to that address, so set up forwarding for sales@ first and confirm it works.
+4. **Restrict to domain:** in the form settings, allow your `*.pages.dev` preview address now and `verloniq.com` later. Check which plan this needs.
+5. **Spam filtering:** keep Formspree's automatic spam filtering on. The `_gotcha` honeypot works with no setup.
+6. **Optional Cloudflare Turnstile** (recommended once the form is live):
+   - In the Cloudflare dashboard, go to **Turnstile**, add a widget for your preview domain and `verloniq.com`, and choose "Managed" mode.
+   - Put the **secret key** into Formspree's Turnstile / CAPTCHA setting. **Never put it in the repo.**
+   - **Send me the site key** (it starts with `0x`).
+7. **Plan and limits:** check the free plan's monthly submission limit and which of the features above it includes. **Don't upgrade without deciding first.** I won't turn on anything paid.
 
-1. Create a Formspree account at formspree.io, ideally signed up with a VERLONIQ business email address.
-2. Create a new form, e.g. "VERLONIQ website enquiries".
-3. In the form's settings, set the **notification email** to `sales@verloniq.com`. Formspree sends a verification email to that address, so do this **once forwarding for sales@ is confirmed working**.
-4. Review the form's spam settings and keep spam filtering on. reCAPTCHA isn't used, because the site submits in the background. The honeypot and timing checks cover the basics.
-5. If your plan offers it, restrict the form to your domains: your `*.pages.dev` address now, and `verloniq.com` later.
-6. Check Formspree's current plan limits (monthly submissions) and decide whether the free plan is enough. **Don't upgrade until you've decided. Paid plans need your approval.**
+> Note: these Formspree feature names come from Formspree's documentation index. This session couldn't open the full help pages (`help.formspree.io` isn't in its allowed network list), so please confirm the exact setting names and plan requirements in your dashboard.
 
-**Send me:** the form endpoint, which looks like `https://formspree.io/f/xxxxxxxx`, and confirm that the sales@ forwarding works.
+## What to configure in Cal.com
 
-### 2. Cal.com (consultation booking)
-
-1. Create a Cal.com account. Use a business username such as `verloniq`, not your personal name, because the username appears in the booking URL.
-2. **Connect your calendar** (Google or Microsoft) only so Cal.com can check when you're busy. Visitors can't see your calendar.
-3. Create an event type:
-   - **Title:** Free consultation. **Duration:** 30 minutes.
-   - **Location:** your choice of Google Meet, Zoom, Microsoft Teams or phone.
-   - **Booking questions:** name and email are the defaults. Optionally add "Business name" and "What would you like to automate?".
-   - **Limits:** a minimum notice period, buffer time between meetings and a daily booking limit, to suit you.
-4. Hide or delete any other event types you don't want people to book, so your public profile only shows this one.
-5. To match the website, go to **Settings → Appearance**:
+1. **Account:** sign up with your business email and choose a **business username** such as `verloniq`, because it appears in the booking link. Turn on two-factor authentication.
+2. **Calendar:** connect your Google or Microsoft calendar **only so Cal.com can check when you're busy**. Visitors can't see your events.
+3. **Event type:**
+   - **Title:** Free 30-Minute Workflow Discovery Call. **Duration:** 30 minutes. **URL slug:** e.g. `discovery-call`.
+   - **Location:** Google Meet, Zoom, Microsoft Teams or phone.
+   - **Description:** you can reuse the "What we'll cover" points from the website panel.
+   - **Booking questions:** name and email are the defaults. Add **Business name** (required) and **What would you like to automate?** (optional).
+   - **Limits:** a minimum notice period (e.g. 24 hours), buffer time between calls, a daily limit, and how far ahead people can book.
+4. **Hide other event types**, so your public profile only offers this call.
+5. **Appearance** (Settings → Appearance), to match the website:
    - Choose the **dark** theme.
    - Set the brand colour to `#d6f795` for dark and `#1e3828` for light.
-   - Upload the VERLONIQ mark as your avatar or logo.
-6. Make a test booking yourself and cancel it.
+   - Use the VERLONIQ mark as your avatar or logo.
+6. **Confirmation emails:** make sure Cal.com sends booking confirmations and reminders. Confirmations come from Cal.com, not the website.
+7. **Test it:** make a booking yourself and cancel it.
 
-**Send me:** the event's public link, e.g. `https://cal.com/verloniq/consultation`. If your account uses Cal.com's EU region (`cal.eu`), tell me, because the privacy policy mentions where data is stored.
+**Send me:** the event's public link (e.g. `https://cal.com/verloniq/discovery-call`), and tell me whether your account is on Cal.com's US (`cal.com`) or EU (`cal.eu`) region.
 
-### 3. Privacy policy details
+## Privacy Policy and Terms of Use (drafts)
 
-The draft is at `public/privacy.html` (published at `/privacy`, marked `noindex` and shown as a draft). Please confirm or provide:
+`public/privacy.html` and `public/terms.html` are published at `/privacy` and `/terms`. Both are labelled as drafts, marked `noindex` and kept out of the sitemap. Please confirm or provide:
 
-- [ ] **Legal entity name and ABN.** Sole trader, company or trust?
-- [ ] **Privacy contact email**, e.g. `privacy@verloniq.com` or `sales@verloniq.com`.
-- [ ] **Business email provider** (Google Workspace, Microsoft 365, etc.) and which calendar you'll connect to Cal.com.
-- [ ] **Cal.com data region** (US or EU).
-- [ ] **Retention period** for enquiries that don't become clients. The draft says 24 months.
-- [ ] **MFA is turned on** for the Formspree, Cal.com, email and Cloudflare accounts.
-- [ ] The **publication date** to show as "Last updated".
+- [ ] Legal entity name and ABN.
+- [ ] Privacy and contact email addresses.
+- [ ] Business email provider, and which calendar you'll connect to Cal.com.
+- [ ] Each provider's data region (Formspree, Cal.com US or EU, email provider).
+- [ ] Retention period for enquiries that don't become clients. The draft says 24 months.
+- [ ] That two-factor authentication is on for Formspree, Cal.com, email and Cloudflare.
+- [ ] Whether you'll turn on Turnstile. The privacy policy already describes it as optional.
+- [ ] Publication date. Then have a lawyer or privacy professional review both documents.
 
-**Notes for your review:**
-
-- Many businesses with annual turnover under A$3 million are exempt from the Privacy Act. The draft follows the Australian Privacy Principles anyway, because clients expect it and you may grow past the threshold. Have a lawyer or privacy professional review it before launch.
-- The site loads fonts from **Google Fonts**, which sends visitors' IP addresses to Google. The policy discloses this. If you'd rather not involve Google, the fonts can be self-hosted in `public/`. That's a small change, and the design stays the same.
-- Check the four provider privacy-policy links in the table are still current when you finalise it.
-
----
+**Notes:**
+- Many businesses with turnover under A$3 million are exempt from the Privacy Act. The draft follows the Australian Privacy Principles anyway.
+- The site loads **Google Fonts**, which sends visitors' IP addresses to Google, and the policy says so. Self-hosting the fonts would remove that without any visible change.
 
 ## Once you send the details, I'll:
 
-1. Put the endpoint and booking URL into `public/config.js`. Add `contactEmail` only once sales@ is confirmed.
-2. Fill in the privacy policy placeholders, remove its draft notice, and add `/privacy` to `sitemap.xml`. This happens only when you approve the final text.
-3. Re-run the tests, then send one real test enquiry through the Cloudflare preview and confirm it reaches the inbox.
+1. Put the endpoint, booking URL and (optionally) the Turnstile site key into `public/config.js`. Add `contactEmail` only once sales@ forwarding is confirmed.
+2. Re-run the automated tests, then send **one real test enquiry** through the Cloudflare preview and confirm it reaches sales@.
+3. After you approve the final text, fill in the legal placeholders, remove the draft labels and `noindex`, and add `/privacy` and `/terms` to `sitemap.xml`.
 4. Leave the pre-launch banner and domain untouched until you say otherwise.

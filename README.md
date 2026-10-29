@@ -13,13 +13,14 @@ To preview it the way it will be served (root-relative favicon, 404 page), run `
 ## What works
 
 - Responsive navigation (mobile, tablet, desktop), mobile menu, and highlighting of the section in view
-- Five VERLONIQ services: workflow automation, software integrations, AI enquiry handling, custom internal tools and ongoing support
+- Positioning: "Find out what your business could automate." Five services (AI and process automation, system integrations, AI opportunity assessments and workflow consulting, custom internal tools, ongoing support and AI advisory)
+- Customer journey: a free discovery call, then either an optional paid assessment or a direct implementation quote, then implementation and optional support
 - Interactive browser-only example that parses a fictional enquiry into reviewable fields (customer, organisation, contact details, category, priority, next action, draft reply)
 - Three sample messages to test different cases; Ctrl/⌘ + Enter runs the demo
-- Pricing (illustrative) and FAQ sections
-- Enquiry form ready for **Formspree**, with validation, spam traps, a consent checkbox, a privacy notice and success/error messages. It stays in **demo mode** (nothing is sent) until an endpoint is set in `public/config.js`.
-- "Book a free consultation" panel ready for **Cal.com** (30-minute event). It shows a placeholder until a booking URL is set in `public/config.js`.
-- Draft privacy policy at `public/privacy.html`, listing Formspree, Cal.com, Cloudflare and Google Fonts as third-party providers
+- "Working with VERLONIQ" engagement options (no published prices) and FAQ
+- Enquiry form ready for **Formspree** (name, business, email, optional phone, industry, team size, service, process description, consent), with validation, spam protection (honeypot, timing, optional Cloudflare Turnstile), a duplicate guard and success/error messages. It stays in **demo mode** (nothing is sent) until an endpoint is set in `public/config.js`.
+- "Book a Free Discovery Call" panel for the **Free 30-Minute Workflow Discovery Call** on **Cal.com**. It shows a placeholder until a booking URL is set in `public/config.js`.
+- Draft Privacy Policy (`public/privacy.html`) and Terms of Use (`public/terms.html`), both marked as drafts for review
 
 See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and booking.
 - Subtle reveal-on-scroll, hover and transition effects; all motion is disabled for visitors who prefer reduced motion

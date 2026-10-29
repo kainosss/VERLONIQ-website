@@ -9,6 +9,7 @@ public/              ← the only directory Cloudflare publishes
   index.html         website (inline CSS + JavaScript)
   config.js          Formspree endpoint + Cal.com link (empty = demo mode)
   privacy.html       privacy policy (draft, noindex)
+  terms.html         terms of use (draft, noindex)
   404.html           branded "page not found" page (served automatically)
   _headers           security headers + noindex on *.pages.dev
   robots.txt         search-engine rules → points at verloniq.com sitemap
@@ -63,14 +64,14 @@ This applies `_headers` and the 404 page exactly as Pages does. For a quick look
 - [ ] Response headers include `Content-Security-Policy`, `X-Frame-Options: DENY` and (on `*.pages.dev`) `X-Robots-Tag: noindex`.
 - [ ] `/some-missing-page` shows the branded 404 page with status 404.
 - [ ] `/CLAUDE.md` and `/README.md` return 404 (internal docs aren't published).
-- [ ] Interactive demo, mobile menu, FAQ, the enquiry form (demo mode until configured) and the booking panel behave as expected on a phone.
-- [ ] `/privacy` shows the draft privacy policy.
+- [ ] Interactive demo, mobile menu, FAQ, the enquiry form (demo mode until configured) and the "Book a Free Discovery Call" panel behave as expected on a phone.
+- [ ] `/privacy` and `/terms` show the draft policies.
 
 ## 3. Launch checklist (before attaching verloniq.com)
 
 - [ ] Business registration (ABN) and trade-mark checks completed.
 - [ ] Formspree endpoint and Cal.com link set in `public/config.js` (see [`INTEGRATIONS.md`](INTEGRATIONS.md)), and a real test enquiry and booking checked end-to-end. `_headers` already allows `formspree.io`.
-- [ ] Privacy policy (`public/privacy.html`) finalised: placeholders filled, draft notice and `noindex` removed, and `/privacy` added to `sitemap.xml`. Terms page added if needed.
+- [ ] Privacy Policy (`public/privacy.html`) and Terms of Use (`public/terms.html`) reviewed and finalised: placeholders filled, draft notices and `noindex` removed, and `/privacy` and `/terms` added to `sitemap.xml`.
 - [ ] Pricing and service descriptions confirmed by the founder.
 - [ ] Pre-launch banner, "demo mode" labels and footer notice revised **only** once the above are true.
 

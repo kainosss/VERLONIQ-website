@@ -13,12 +13,17 @@ window.VERLONIQ_CONFIG = {
   // Empty = enquiry form stays in DEMO MODE (validates, but sends nothing).
   formspreeEndpoint: "",
 
-  // Public Cal.com link for the free 30-minute consultation event type,
-  // e.g. "https://cal.com/verloniq/consultation".
-  // Empty = "Book a free consultation" shows a "booking not yet connected" placeholder.
+  // Public Cal.com link for the "Free 30-Minute Workflow Discovery Call" event type,
+  // e.g. "https://cal.com/verloniq/discovery-call".
+  // Empty = "Book a Free Discovery Call" shows a "booking not yet connected" placeholder.
   calBookingUrl: "",
 
   // Optional public contact email shown if a submission fails, e.g. "sales@verloniq.com".
   // Leave empty until email forwarding for the address is confirmed working.
-  contactEmail: ""
+  contactEmail: "",
+
+  // Optional Cloudflare Turnstile SITE key (public, starts with "0x"), for Formspree's
+  // Turnstile spam protection. Only used once formspreeEndpoint is set.
+  // The Turnstile SECRET key goes ONLY into the Formspree dashboard — never in this file.
+  turnstileSiteKey: ""
 };
