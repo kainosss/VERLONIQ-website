@@ -1,0 +1,9 @@
+VERLONIQ — GitHub starter
+
+1. Unzip this package onto your computer.
+2. Open your GitHub repository, then click Add file > Upload files.
+3. Upload index.html, README.md, CLAUDE.md, and .gitignore into the root of the repository (not inside another folder). If GitHub hides .gitignore, it is optional.
+4. Commit the files.
+5. Clone/open the repo using Claude Code. Ask Claude to read CLAUDE.md before editing.
+
+IMPORTANT: This site is still a preview. Its contact form only copies a brief to your clipboard; it does not send enquiries. Do not advertise it as a live lead-capture website until the form/backend and privacy/legal details are completed.

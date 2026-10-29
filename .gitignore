@@ -1,0 +1,9 @@
+# Local development files and credentials
+.env
+.env.*
+!.env.example
+node_modules/
+.wrangler/
+.DS_Store
+Thumbs.db
+*.log
