@@ -11,6 +11,7 @@ wrangler.jsonc       ← Cloudflare config: Worker name + "serve ./public as sta
 public/              ← the only directory Cloudflare publishes
   index.html         website (inline CSS + JavaScript)
   config.js          Formspree endpoint + Cal.com link (empty = demo mode)
+  lead-assistant.js  AI Lead Assistant demo engine (simulated, browser-only)
   privacy.html       privacy policy (draft, noindex)
   terms.html         terms of use (draft, noindex)
   404.html           branded "page not found" page (served for unknown URLs)
@@ -21,6 +22,7 @@ public/              ← the only directory Cloudflare publishes
   og-image.png       1200×630 social-share preview
 CLAUDE.md, README.md, DEPLOYMENT.md, INTEGRATIONS.md, UPLOAD_TO_GITHUB.txt, .gitignore
                      ← internal docs, not published
+automation/, tests/  ← n8n workflow kit and tests, not published
 ```
 
 ## 1. How builds work (Workers Builds)
