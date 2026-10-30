@@ -1,6 +1,15 @@
 # Enquiry form (Formspree) and discovery-call booking (Cal.com)
 
-Both integrations are **built but switched off**. Everything is controlled by one file, [`public/config.js`](public/config.js). None of these values are secrets.
+Everything is controlled by one file, [`public/config.js`](public/config.js). None of these values are secrets.
+
+**Current status**
+
+| Integration | Status |
+| --- | --- |
+| Formspree enquiry form | **Configured:** `https://formspree.io/f/xwllqgvn`. The form is live wherever this config is deployed. A real end-to-end test is still to be done (see below). |
+| Cal.com booking | Not configured yet, so the panel shows its "not yet connected" placeholder. |
+| Contact email fallback | Not set. Add it once sales@ forwarding is confirmed. |
+| Cloudflare Turnstile | Not set (optional). |
 
 | Setting | Empty (current) | Set to a valid value |
 | --- | --- | --- |

@@ -18,7 +18,7 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 - Be honest about what exists. The current demo is local JavaScript rules, **not a real AI integration**.
 - Do not invent customer testimonials, partner endorsements, completed case studies, demonstrated ROI, or promised automations.
 - Pricing is illustrative until the founder confirms offerings and rates.
-- All contact forms are currently **demo only** and do not transmit leads. Do not make them appear functional without actually wiring, testing and securing a backend/service. The enquiry form (Formspree) and booking (Cal.com) switch on only via `public/config.js` — see `INTEGRATIONS.md`; never invent endpoints or URLs.
+- The enquiry form is wired to the founder's Formspree endpoint in `public/config.js`, so it sends real enquiries wherever that config is deployed. Booking (Cal.com) is still a placeholder until the founder supplies its URL. See `INTEGRATIONS.md`; never invent endpoints or URLs, and never let automated tests send real submissions.
 
 ## Development approach
 - Start with current `index.html` (no build step required). The website lives in `public/`, served as static assets by a Cloudflare **Workers** project via Workers Builds. `wrangler.jsonc` must stay at the repo root, because preview builds fail without it. Keep internal docs like this file outside `public/`.

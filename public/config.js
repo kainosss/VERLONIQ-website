@@ -11,7 +11,7 @@
 window.VERLONIQ_CONFIG = {
   // Formspree form endpoint, e.g. "https://formspree.io/f/abcdwxyz".
   // Empty = enquiry form stays in DEMO MODE (validates, but sends nothing).
-  formspreeEndpoint: "",
+  formspreeEndpoint: "https://formspree.io/f/xwllqgvn",
 
   // Public Cal.com link for the "Free 30-Minute Workflow Discovery Call" event type,
   // e.g. "https://cal.com/verloniq/discovery-call".
