@@ -21,7 +21,7 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 - All contact forms are currently **demo only** and do not transmit leads. Do not make them appear functional without actually wiring, testing and securing a backend/service. The enquiry form (Formspree) and booking (Cal.com) switch on only via `public/config.js` — see `INTEGRATIONS.md`; never invent endpoints or URLs.
 
 ## Development approach
-- Start with current `index.html` (no build step required). The website lives in `public/` (Cloudflare Pages output directory); keep internal docs like this file outside `public/`.
+- Start with current `index.html` (no build step required). The website lives in `public/`, served as static assets by a Cloudflare **Workers** project via Workers Builds. `wrangler.jsonc` must stay at the repo root, because preview builds fail without it. Keep internal docs like this file outside `public/`.
 - Prefer minimal, reviewable changes over major refactors.
 - Use semantic HTML, accessibility-friendly focus states, appropriate labels, responsive CSS, and browser-tested JavaScript.
 - Don't commit secrets, API keys, credentials, `.env` files, or customer data; the GitHub repository is public.

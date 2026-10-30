@@ -8,7 +8,7 @@ The website lives in [`public/`](public/). That is the only directory published 
 
 Open `public/index.html` in Chrome, Firefox, Safari or Edge. No installation is needed. Google Fonts require internet; system-font fallbacks are provided.
 
-To preview it the way it will be served (root-relative favicon, 404 page), run `python3 -m http.server 8000 -d public` and open http://localhost:8000. To also apply the Cloudflare security headers, run `npx wrangler pages dev public`.
+To preview it the way it will be served (root-relative favicon, 404 page), run `python3 -m http.server 8000 -d public` and open http://localhost:8000. To also apply the Cloudflare security headers, run `npx wrangler dev` from the repository root.
 
 ## What works
 
@@ -36,7 +36,7 @@ See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and bookin
 
 ## Deployment
 
-The site is prepared for **Cloudflare Pages**: no build command, output directory `public`. That directory holds `_headers`, `404.html`, `robots.txt`, `sitemap.xml`, the favicon and the social-share image. See [`DEPLOYMENT.md`](DEPLOYMENT.md) for preview-deployment steps and the launch checklist. Do not attach `verloniq.com` or use the site for real customer acquisition until the real contact/booking workflow, privacy policy, business details and service terms are in place.
+The site is deployed by **Cloudflare Workers Builds** (static assets). [`wrangler.jsonc`](wrangler.jsonc) serves the `public` directory, and there's no build command. That directory holds `_headers`, `404.html`, `robots.txt`, `sitemap.xml`, the favicon and the social-share image. See [`DEPLOYMENT.md`](DEPLOYMENT.md) for preview-deployment steps and the launch checklist. Do not attach `verloniq.com` or use the site for real customer acquisition until the real contact/booking workflow, privacy policy, business details and service terms are in place.
 
 ## Suggested next build
 

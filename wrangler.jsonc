@@ -1,0 +1,22 @@
+// Cloudflare Workers configuration for the VERLONIQ static website.
+//
+// The site is plain static files in ./public — there is no build step and no
+// Worker script. This file lets Cloudflare's Git builds deploy it on every
+// branch: `wrangler deploy` (production) and `wrangler versions upload`
+// (preview builds for pull requests), which fails without a config file.
+//
+// "name" must match the Worker's name in the Cloudflare dashboard.
+{
+  "name": "verloniq-website",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public",
+    // Serve public/404.html (with a 404 status) for unknown URLs.
+    "not_found_handling": "404-page",
+    // /privacy.html → /privacy, matching the links and canonical URLs.
+    "html_handling": "auto-trailing-slash"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
