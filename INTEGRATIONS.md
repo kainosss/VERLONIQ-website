@@ -9,7 +9,7 @@ Everything is controlled by one file, [`public/config.js`](public/config.js). No
 | Formspree enquiry form | **Configured:** `https://formspree.io/f/xwllqgvn`. The form is live wherever this config is deployed. A real end-to-end test is still to be done (see below). |
 | Cal.com booking | **Configured:** `https://cal.com/verloniq/free-20-minute-discovery-call`. The booking panel's "Choose a time" button opens it in a new tab. Only the free Business Clarity Call is public; paid assessment links are shared privately after a proposal is accepted. |
 | Contact email fallback | Not set. Add it once sales@ forwarding is confirmed. |
-| Cloudflare Turnstile | Supported in code, not set yet (`turnstileSiteKey` empty). Follow the rollout order in Formspree step 6. |
+| Cloudflare Turnstile | **Site Key set** (`0x4AAAAAAFttPcdbmy99PE4C`; public by design). The widget shows on the live form; Formspree ignores the token until the Secret Key is added there. Next: steps 3–6 of Formspree step 6. |
 
 | Setting | Empty (current) | Set to a valid value |
 | --- | --- | --- |
