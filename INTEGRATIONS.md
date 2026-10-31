@@ -9,7 +9,7 @@ Everything is controlled by one file, [`public/config.js`](public/config.js). No
 | Formspree enquiry form | **Configured:** `https://formspree.io/f/xwllqgvn`. The form is live wherever this config is deployed. A real end-to-end test is still to be done (see below). |
 | Cal.com booking | **Configured:** `https://cal.com/verloniq/free-20-minute-discovery-call`. The booking panel's "Choose a time" button opens it in a new tab. Only the free Business Clarity Call is public; paid assessment links are shared privately after a proposal is accepted. |
 | Contact email fallback | Not set. Add it once sales@ forwarding is confirmed. |
-| Cloudflare Turnstile | Not set (optional). |
+| Cloudflare Turnstile | Supported in code, not set yet (`turnstileSiteKey` empty). Follow the rollout order in Formspree step 6. |
 
 | Setting | Empty (current) | Set to a valid value |
 | --- | --- | --- |
@@ -56,10 +56,22 @@ Nothing else is collected. The automated tests check this exact list.
 3. **Notifications:** set the notification email to **sales@verloniq.com**. Formspree sends a verification email to that address, so set up forwarding for sales@ first and confirm it works.
 4. **Restrict to domain:** in the form settings, allow your `*.pages.dev` preview address now and `verloniq.com` later. Check which plan this needs.
 5. **Spam filtering:** keep Formspree's automatic spam filtering on. The `_gotcha` honeypot works with no setup.
-6. **Optional Cloudflare Turnstile** (recommended once the form is live):
-   - In the Cloudflare dashboard, go to **Turnstile**, add a widget for your preview domain and `verloniq.com`, and choose "Managed" mode.
-   - Put the **secret key** into Formspree's Turnstile / CAPTCHA setting. **Never put it in the repo.**
-   - **Send me the site key** (it starts with `0x`).
+6. **Cloudflare Turnstile spam protection.** The website code supports it. **Follow this order, or every enquiry will be rejected** (that's the 403 you saw with reCAPTCHA):
+   1. **Create the widget (Cloudflare):** Cloudflare dashboard → **Turnstile** → **Add widget**.
+      - Name: `VERLONIQ enquiry form`.
+      - Hostnames: `verloniq.com` and `www.verloniq.com`. Add the `*.workers.dev` preview hostname only if you want to test on previews.
+      - Mode: **Managed**.
+      - Copy the **Site Key** (public, starts with `0x`) and the **Secret Key** (private).
+   2. **Add the Site Key to the website:** put it in `turnstileSiteKey` in `public/config.js` and deploy.
+      - The widget then appears on the form, and the site sends `cf-turnstile-response` with each enquiry.
+      - Formspree ignores the token until step 4, so enquiries keep working.
+   3. **Check the live form:** the security check appears, completes, and a test enquiry still arrives.
+   4. **Enable Turnstile in Formspree:** form → **Settings** → spam protection / CAPTCHA → **Adjust settings** → choose **Cloudflare Turnstile** → paste the **Secret Key** → save.
+      - Make sure reCAPTCHA stays **off**.
+      - **The Secret Key goes only into Formspree.** Never put it in this repository, `config.js` or an email.
+   5. **Test a real enquiry again,** marked TEST. It should be accepted and arrive by email.
+   6. **If enquiries are rejected,** turn Turnstile off in Formspree to restore the form immediately, then investigate.
+
 7. **Plan and limits:** check the free plan's monthly submission limit and which of the features above it includes. **Don't upgrade without deciding first.** I won't turn on anything paid.
 
 > Note: these Formspree feature names come from Formspree's documentation index. This session couldn't open the full help pages (`help.formspree.io` isn't in its allowed network list), so please confirm the exact setting names and plan requirements in your dashboard.
