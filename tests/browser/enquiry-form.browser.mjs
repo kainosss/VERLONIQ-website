@@ -35,8 +35,12 @@ const page = async (respond, opts = {}) => {
   const ctx = await browser.newContext({ viewport: opts.viewport || { width: 1280, height: 900 }, isMobile: !!opts.mobile, hasTouch: !!opts.mobile });
   const p = await ctx.newPage();
   p.errs = []; p.warns = []; p.posts = []; p.tsLoads = [];
+  // Config: 'real' = the repository's public/config.js; otherwise the live endpoint with the given Turnstile key ('' = not configured).
+  if (opts.config !== 'real') {
+    const key = opts.turnstile ? TEST_SITE_KEY : '';
+    await ctx.route('**/config.js', (r) => r.fulfill({ contentType: 'application/javascript', body: `window.VERLONIQ_CONFIG={formspreeEndpoint:'${ENDPOINT}',calBookingUrl:'https://cal.com/verloniq/free-20-minute-discovery-call',contactEmail:'',turnstileSiteKey:'${key}'};` }));
+  }
   if (opts.turnstile) {
-    await ctx.route('**/config.js', (r) => r.fulfill({ contentType: 'application/javascript', body: `window.VERLONIQ_CONFIG={formspreeEndpoint:'${ENDPOINT}',calBookingUrl:'https://cal.com/verloniq/free-20-minute-discovery-call',contactEmail:'',turnstileSiteKey:'${TEST_SITE_KEY}'};` }));
     await ctx.route('https://challenges.cloudflare.com/**', (r) => { p.tsLoads.push(r.request().url()); return opts.turnstile === 'blocked' ? r.abort('blockedbyclient') : r.fulfill({ contentType: 'application/javascript', body: TS_MOCK }); });
   } else {
     await ctx.route('https://challenges.cloudflare.com/**', (r) => { p.tsLoads.push(r.request().url()); return r.abort(); });
@@ -61,6 +65,7 @@ const fill = async (p, tag) => {
 const submit = async (p) => { await p.waitForTimeout(3100); await p.click('#enquirySubmit'); await p.waitForFunction(() => !document.getElementById('enquirySubmit').disabled && (document.getElementById('formSuccess').hidden === false || !document.getElementById('formStatus').hidden)); };
 const succeeded = (p) => p.evaluate(() => document.getElementById('formSuccess').hidden === false);
 const status = (p) => p.textContent('#formStatus');
+const solve = (p, t) => p.evaluate((t) => window.__ts.solve(t), t);
 const json = (status, body) => (route) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
 
 try {
@@ -119,7 +124,23 @@ try {
   ok('missing fields and missing consent are blocked in the browser; no request sent');
 
 
-  // ---------------- Turnstile not configured (current production config) ----------------
+  // ---------------- The repository's REAL config: production Site Key ----------------
+  p = await page(json(200, { ok: true }), { config: 'real', turnstile: 'ok' });
+  const realKey = await p.evaluate(() => window.VERLONIQ_CONFIG.turnstileSiteKey);
+  assert.match(realKey, /^0x[A-Za-z0-9_-]{16,}$/, 'real config has a production Turnstile site key');
+  assert.notEqual(realKey, TEST_SITE_KEY);
+  await open(p); await p.waitForFunction(() => window.__ts && window.__ts.renders === 1);
+  assert.equal(await p.evaluate(() => window.__ts.opts.sitekey), realKey);
+  await fill(p, 'real config'); await solve(p); await submit(p); assert.equal(await succeeded(p), true);
+  assert.ok(p.posts[0].body.includes(`name="cf-turnstile-response"\r\n\r\n${DUMMY_TOKEN}`));
+  // Only the four public settings exist, and no other 0x… key (a Turnstile Secret Key is longer than the Site Key) is anywhere in the page or config.
+  const exposed = await p.evaluate(() => ({ keys: Object.keys(window.VERLONIQ_CONFIG).sort(), text: document.documentElement.outerHTML + JSON.stringify(window.VERLONIQ_CONFIG) }));
+  assert.deepEqual(exposed.keys, ['calBookingUrl', 'contactEmail', 'formspreeEndpoint', 'turnstileSiteKey'], 'config holds only public settings');
+  const otherKeys = (exposed.text.match(/\b0x[A-Za-z0-9_-]{16,}/g) || []).filter(k => k !== realKey);
+  assert.deepEqual(otherKeys, [], 'no Turnstile key other than the Site Key appears in the page');
+  ok(`real config → widget rendered with the production Site Key (${realKey.slice(0, 6)}…), token sent, success on {"ok":true}; no secret in the page`);
+
+  // ---------------- Turnstile not configured ----------------
   p = await page(json(200, { ok: true })); await open(p); await p.waitForTimeout(300);
   assert.deepEqual(p.tsLoads, []); assert.equal(await p.isVisible('#turnstileBox'), false); assert.equal(await p.isVisible('#tsNote'), false);
   await fill(p, 'no turnstile'); await submit(p); assert.equal(await succeeded(p), true);
@@ -127,7 +148,6 @@ try {
   ok('Turnstile NOT configured → no Cloudflare script loaded, no widget, form submits exactly as today');
 
   // ---------------- Turnstile configured (Cloudflare test site key + mocked widget) ----------------
-  const solve = (p, t) => p.evaluate((t) => window.__ts.solve(t), t);
   p = await page(json(200, { ok: true }), { turnstile: 'ok' });
   await p.waitForTimeout(300); assert.equal(p.tsLoads.length, 0);
   await open(p); await p.waitForFunction(() => window.__ts && window.__ts.renders === 1);

@@ -25,5 +25,5 @@ window.VERLONIQ_CONFIG = {
   // Optional Cloudflare Turnstile SITE key (public, starts with "0x"), for Formspree's
   // Turnstile spam protection. Only used once formspreeEndpoint is set.
   // The Turnstile SECRET key goes ONLY into the Formspree dashboard — never in this file.
-  turnstileSiteKey: ""
+  turnstileSiteKey: "0x4AAAAAAFttPcdbmy99PE4C"
 };
