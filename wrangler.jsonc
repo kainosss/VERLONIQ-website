@@ -2,8 +2,8 @@
 //
 // The site is plain static files in ./public — there is no build step and no
 // Worker script. This file lets Cloudflare's Git builds deploy it on every
-// branch: `wrangler deploy` (production) and `wrangler versions upload`
-// (preview builds for pull requests), which fails without a config file.
+// branch: `wrangler deploy` (production) and `wrangler preview` (preview builds
+// for pull requests, Wrangler 4.156+), which needs the "previews" block below.
 //
 // "name" must match the Worker's name in the Cloudflare dashboard.
 {
@@ -18,5 +18,7 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+  // Required by `wrangler preview` (Workers Builds non-production branches).
+  "previews": {}
 }
