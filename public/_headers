@@ -1,13 +1,17 @@
-# Cloudflare Pages response headers — https://developers.cloudflare.com/pages/configuration/headers/
+# Response headers for the static site (same format on Cloudflare Workers static assets and Pages):
+# https://developers.cloudflare.com/workers/static-assets/headers/
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; object-src 'none'
 
-# Keep the default *.pages.dev address out of search results; verloniq.com stays indexable.
+# Keep Cloudflare's default addresses (workers.dev, incl. preview URLs, and pages.dev)
+# out of search results; verloniq.com stays indexable.
 https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+https://:worker.:account.workers.dev/*
   X-Robots-Tag: noindex
 
 /favicon.svg

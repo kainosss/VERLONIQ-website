@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VERLONIQ Lead Assistant — lead result (website demo shape)",
+  "description": "Returned by simulate() in public/lead-assistant.js (mode \"simulated\"). A future live backend should return the same shape (mode \"ai\") so the demo UI works unchanged.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "lead_id",
+    "received_at",
+    "business",
+    "customer",
+    "job",
+    "location",
+    "urgency",
+    "safety",
+    "missing_information",
+    "requires_human_review",
+    "review_reasons",
+    "draft_reply",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "mode": {
+      "enum": [
+        "simulated",
+        "ai",
+        "fallback"
+      ]
+    },
+    "lead_id": {
+      "type": "string"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "business": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "trade"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "electrical",
+            "plumbing",
+            "aircon",
+            "security"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "trade": {
+          "type": "string"
+        }
+      }
+    },
+    "customer": {
+      "type": "object",
+      "required": [
+        "name",
+        "email",
+        "phone",
+        "organisation"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "organisation": {
+          "type": "string"
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "required": [
+        "category",
+        "type",
+        "summary",
+        "requirements",
+        "property_type",
+        "preferred_timing"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "fault",
+            "maintenance",
+            "installation",
+            "general"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "property_type": {
+          "enum": [
+            "Residential",
+            "Commercial",
+            "Unknown"
+          ]
+        },
+        "preferred_timing": {
+          "type": "string"
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": [
+        "suburb",
+        "address",
+        "postcode",
+        "state"
+      ],
+      "properties": {
+        "suburb": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "urgency": {
+      "type": "object",
+      "required": [
+        "level",
+        "label",
+        "reasons"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "emergency",
+            "urgent",
+            "soon",
+            "routine",
+            "quote"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "flagged",
+        "hazards"
+      ],
+      "properties": {
+        "flagged": {
+          "type": "boolean"
+        },
+        "hazards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "label",
+              "action"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "missing_information": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requires_human_review": {
+      "const": true
+    },
+    "review_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "draft_reply": {
+      "type": "object",
+      "required": [
+        "subject",
+        "body"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string"
+    }
+  }
+}

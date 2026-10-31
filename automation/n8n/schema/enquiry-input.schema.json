@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verloniq.com/schemas/lead-assistant/enquiry-input.json",
+  "title": "VERLONIQ Lead Assistant — enquiry input (webhook request body)",
+  "description": "What a trusted backend (never a browser) POSTs to the n8n webhook. The request must also carry the shared secret header configured on the Webhook node.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["business_id", "enquiry_text"],
+  "properties": {
+    "business_id": {
+      "type": "string",
+      "enum": ["electrical", "plumbing", "aircon", "security"],
+      "description": "Which business profile to use. Edit BUSINESSES in code/02-build-ai-request.js for a real client."
+    },
+    "enquiry_text": { "type": "string", "minLength": 15, "maxLength": 4000, "description": "The customer's message, as received." },
+    "customer_name": { "type": "string", "maxLength": 100 },
+    "customer_email": { "type": "string", "maxLength": 254, "format": "email" },
+    "customer_phone": { "type": "string", "maxLength": 20 },
+    "source": { "type": "string", "maxLength": 40, "description": "e.g. website_form, email, test" },
+    "submitted_at": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "business_id": "electrical",
+      "enquiry_text": "Hi, it's Mia Thompson. Our power keeps tripping and there's a burning smell coming from the switchboard at our house in Chermside. Call me on 0412 555 018.",
+      "source": "test"
+    }
+  ]
+}

@@ -1,73 +1,82 @@
-# Deploying VERLONIQ to Cloudflare Pages
+# Deploying VERLONIQ to Cloudflare
 
-The website is plain static HTML in the `public/` directory. It needs no framework, build step or dependencies. These steps create a **temporary preview** on a `*.pages.dev` address. Do not attach `verloniq.com` until the launch checklist below is complete and the founder has approved it.
+The website is plain static HTML in the `public/` directory. It needs no framework, build step or dependencies.
+
+The live project is a **Cloudflare Workers** project (static assets) connected to this GitHub repository through **Workers Builds**. It is *not* a Pages project. Deployment is configured by [`wrangler.jsonc`](wrangler.jsonc) at the repository root.
 
 ## Repository layout
 
 ```
+wrangler.jsonc       ← Cloudflare config: Worker name + "serve ./public as static assets"
 public/              ← the only directory Cloudflare publishes
   index.html         website (inline CSS + JavaScript)
-  404.html           branded "page not found" page (served automatically)
-  _headers           security headers + noindex on *.pages.dev
+  config.js          Formspree endpoint + Cal.com link (empty = demo mode)
+  lead-assistant.js  AI Lead Assistant demo engine (simulated, browser-only)
+  privacy.html       privacy policy (draft, noindex)
+  terms.html         terms of use (draft, noindex)
+  404.html           branded "page not found" page (served for unknown URLs)
+  _headers           security headers + noindex on *.workers.dev / *.pages.dev
   robots.txt         search-engine rules → points at verloniq.com sitemap
   sitemap.xml        single-page sitemap for https://verloniq.com/
   favicon.svg        browser tab icon
   og-image.png       1200×630 social-share preview
-CLAUDE.md, README.md, DEPLOYMENT.md, UPLOAD_TO_GITHUB.txt, .gitignore
+CLAUDE.md, README.md, DEPLOYMENT.md, INTEGRATIONS.md, UPLOAD_TO_GITHUB.txt, .gitignore
                      ← internal docs, not published
+automation/, tests/  ← n8n workflow kit and tests, not published
 ```
 
-## 1. Create the preview deployment (Git integration)
+## 1. How builds work (Workers Builds)
 
-Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** tab → **Connect to Git** → choose `kainosss/VERLONIQ-website`.
-
-Use exactly these settings:
+In the Cloudflare dashboard, go to **Workers & Pages → verloniq-website → Settings → Build**. The expected settings are:
 
 | Setting | Value |
 | --- | --- |
-| Project name | `verloniq-website` (this becomes `verloniq-website.pages.dev`) |
+| Git repository | `kainosss/VERLONIQ-website` |
 | Production branch | `main` |
-| Framework preset | `None` |
-| Build command | *(leave empty)* |
-| Build output directory | `public` |
-| Root directory (advanced) | *(leave empty — repository root)* |
+| Build command | *(empty — there is no build step)* |
+| Deploy command | `npx wrangler deploy` (the default) |
+| Non-production branch deploy command | `npx wrangler versions upload` (the default) |
+| Root directory | *(empty — repository root, where `wrangler.jsonc` lives)* |
 | Environment variables | *(none)* |
 
-Click **Save and Deploy**. Notes:
-
-- Until this pull request is merged, `main` has no `public/` directory, so the first production build will fail or be empty. Either merge first, or open the project's **Deployments** tab and use the preview URL Cloudflare builds for the `claude/vigilant-wright-uq8un8` branch (a `<branch-alias>.verloniq-website.pages.dev` address shown next to that deployment).
-- Every push to any branch gets its own preview URL automatically. Cloudflare marks preview URLs `noindex`, and `_headers` does the same for the main `*.pages.dev` address, so nothing appears in search results before launch.
-- Do **not** add a custom domain at this stage.
-
-### Alternative: one-off direct upload (no Git connection)
-
-```bash
-npx wrangler pages deploy public --project-name verloniq-website --branch preview
-```
-
-Requires a Cloudflare login (`npx wrangler login`). The project's default branch is `main`, so `--branch preview` publishes to a preview URL only.
+- **`main`** builds run `wrangler deploy`, which publishes to production.
+- **Every other branch** (pull requests) runs `wrangler versions upload`. This creates a preview version without touching production, and Cloudflare comments on the pull request with the result.
+- **`wrangler.jsonc` is required for preview builds.** Without it, `wrangler versions upload` fails with `Missing entry-point to Worker script or to assets directory`. Only `wrangler deploy` can detect a static site automatically. This was the cause of the failed preview builds on PR #2.
+- `"name"` in `wrangler.jsonc` must match the Worker's name in the dashboard (`verloniq-website`).
+- Do **not** add a custom domain until the launch checklist below is complete.
 
 ### Test locally the way Cloudflare serves it
 
 ```bash
-npx wrangler pages dev public
+npx wrangler dev
 ```
 
-This applies `_headers` and the 404 page exactly as Pages does. For a quick look without Node, `python3 -m http.server 8000 -d public` also works, but it ignores `_headers`.
+Run this from the repository root. It serves `public/` with the same static-assets runtime as production, including `_headers`, the 404 page and `/privacy`-style URLs. For a quick look without Node, `python3 -m http.server 8000 -d public` also works, but it ignores `_headers`.
+
+### Check that a deploy would succeed (no upload)
+
+```bash
+npx wrangler versions upload --dry-run
+```
+
+```bash
+npx wrangler deploy --dry-run
+```
 
 ## 2. Check the preview
 
 - [ ] Home page loads over HTTPS with fonts, favicon and no console errors.
-- [ ] Response headers include `Content-Security-Policy`, `X-Frame-Options: DENY` and (on `*.pages.dev`) `X-Robots-Tag: noindex`.
+- [ ] Response headers include `Content-Security-Policy`, `X-Frame-Options: DENY` and (on `*.workers.dev` addresses) `X-Robots-Tag: noindex`.
 - [ ] `/some-missing-page` shows the branded 404 page with status 404.
 - [ ] `/CLAUDE.md` and `/README.md` return 404 (internal docs aren't published).
-- [ ] Interactive demo, mobile menu, FAQ and the demo-mode assessment form behave as expected on a phone.
+- [ ] Interactive demo, mobile menu, FAQ, the enquiry form (demo mode until configured) and the "Book a Free Discovery Call" panel behave as expected on a phone.
+- [ ] `/privacy` and `/terms` show the draft policies.
 
 ## 3. Launch checklist (before attaching verloniq.com)
 
 - [ ] Business registration (ABN) and trade-mark checks completed.
-- [ ] Real enquiry form/booking workflow connected, tested end-to-end, with spam protection and consent wording. If it posts to an external service, add that origin to `form-action` / `connect-src` in `public/_headers`.
-- [ ] Privacy policy and terms pages added (as `public/privacy.html` etc.) and linked from the footer, then added to `sitemap.xml`.
+- [ ] Formspree endpoint and Cal.com link set in `public/config.js` (see [`INTEGRATIONS.md`](INTEGRATIONS.md)), and a real test enquiry and booking checked end-to-end. `_headers` already allows `formspree.io`.
+- [ ] Privacy Policy (`public/privacy.html`) and Terms of Use (`public/terms.html`) reviewed and finalised: placeholders filled, draft notices and `noindex` removed, and `/privacy` and `/terms` added to `sitemap.xml`.
 - [ ] Pricing and service descriptions confirmed by the founder.
 - [ ] Pre-launch banner, "demo mode" labels and footer notice revised **only** once the above are true.
 

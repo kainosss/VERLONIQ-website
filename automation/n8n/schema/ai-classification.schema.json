@@ -1,0 +1,86 @@
+{
+  "title": "VERLONIQ Lead Assistant — AI classification output",
+  "description": "Sent to the Claude Messages API as output_config.format (type json_schema) so the model must return exactly this shape. Structured-output rules: every object has additionalProperties:false and lists all properties as required; no length or numeric constraints. Unknown values are empty strings, never invented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["customer", "job", "location", "urgency", "safety", "missing_information", "draft_reply", "confidence", "notes_for_staff"],
+  "properties": {
+    "customer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "email", "phone", "organisation"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "organisation": { "type": "string" }
+      }
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "type", "summary", "requirements", "property_type", "preferred_timing"],
+      "properties": {
+        "category": { "type": "string" },
+        "type": { "type": "string", "enum": ["fault", "maintenance", "installation", "general"] },
+        "summary": { "type": "string" },
+        "requirements": { "type": "array", "items": { "type": "string" } },
+        "property_type": { "type": "string", "enum": ["Residential", "Commercial", "Unknown"] },
+        "preferred_timing": { "type": "string" }
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["suburb", "address", "postcode", "state"],
+      "properties": {
+        "suburb": { "type": "string" },
+        "address": { "type": "string" },
+        "postcode": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "urgency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "reasons"],
+      "properties": {
+        "level": { "type": "string", "enum": ["emergency", "urgent", "soon", "routine", "quote"] },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["flagged", "hazards"],
+      "properties": {
+        "flagged": { "type": "boolean" },
+        "hazards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "label", "action"],
+            "properties": {
+              "code": { "type": "string", "enum": ["gas_leak", "electrical_fire", "shock_risk", "water_near_electrics", "active_flooding", "carbon_monoxide", "security_breach", "asbestos", "vulnerable_person", "other"] },
+              "label": { "type": "string" },
+              "action": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "missing_information": { "type": "array", "items": { "type": "string" } },
+    "draft_reply": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "body"],
+      "properties": {
+        "subject": { "type": "string" },
+        "body": { "type": "string" }
+      }
+    },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+    "notes_for_staff": { "type": "string" }
+  }
+}

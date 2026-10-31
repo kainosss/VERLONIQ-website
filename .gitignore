@@ -7,3 +7,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# Internal commercial material (pricing, margins). This repository is PUBLIC — never commit these.
+docs/sales-toolkit/internal/
