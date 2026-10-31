@@ -199,6 +199,23 @@ try {
   ok('page load sends nothing to Formspree or Cal.com; booking link comes only from config.js; no webhook URLs or keys');
   await p.context().close();
 
+  // 10. Homepage links to this page (nav, AI automation card, footer): visible, keyboard-focusable, one-line nav on desktop
+  for (const [w, h] of [[375, 812], [1051, 800], [1280, 900]]) {
+    p = await page({ path: '/', viewport: { width: w, height: h }, mobile: w < 800 });
+    const links = p.locator('a[href="/automation"]');
+    assert.equal(await links.count(), 3);
+    await p.keyboard.press('Tab'); // keyboard user: focus rings (:focus-visible) apply
+    if (w < 1051) { await p.focus('#menuToggle'); await p.keyboard.press('Enter'); }
+    for (const l of await links.all()) {
+      await l.scrollIntoViewIfNeeded(); assert.equal(await l.isVisible(), true);
+      await l.focus(); assert.equal(await l.evaluate((el) => getComputedStyle(el).outlineStyle !== 'none' && getComputedStyle(el).outlineWidth !== '0px'), true, 'visible focus ring');
+    }
+    if (w >= 1051) assert.equal(await p.evaluate(() => [...document.querySelectorAll('#navLinks a')].every((a) => a.getBoundingClientRect().height < 24) && document.querySelector('.nav-cta').getBoundingClientRect().height < 56), true, `nav fits on one line at ${w}px`);
+    await p.keyboard.press('Enter'); await p.waitForURL(/\/automation$/); assert.match(await p.title(), /AI Automation for Small Businesses/);
+    assert.deepEqual(p.errs, []); await p.context().close();
+  }
+  ok('homepage: nav, AI automation card and footer links to /automation are visible, keyboard-focusable with a focus ring and open the page (375/1051/1280px); nav stays on one line');
+
   console.log(`\nALL ${n} AUTOMATION PAGE CHECKS PASSED (Formspree, Turnstile and Cal.com mocked; nothing was sent)`);
 } catch (e) {
   console.error('FAIL', e.message); process.exitCode = 1;
