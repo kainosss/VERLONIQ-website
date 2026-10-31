@@ -2,7 +2,7 @@
 
 **The principle:** customers pay their own software subscriptions and AI usage directly to each provider. VERLONIQ charges separately for implementation and, optionally, ongoing support. VERLONIQ doesn't resell or mark up third-party services.
 
-Use this page to explain costs in the discovery call and proposal. It's written so you can paraphrase it, or paste parts of it, to customers.
+Use this page to explain costs in the Business Clarity Call and proposal. It's written so you can paraphrase it, or paste parts of it, to customers.
 
 ## The two kinds of cost
 

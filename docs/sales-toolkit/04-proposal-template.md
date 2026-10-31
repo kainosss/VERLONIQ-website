@@ -29,7 +29,7 @@
 
 ## 2. The business problem
 
-*[Use their words from the discovery call. Two to four short points.]*
+*[Use their words from the Business Clarity Call. Two to four short points.]*
 
 - {{e.g. "Enquiries arrive through the website form and the office inbox, and urgent jobs can sit unread while the team is on site."}}
 - {{e.g. "Staff re-type customer details into {{job system}} and chase missing addresses before they can book."}}

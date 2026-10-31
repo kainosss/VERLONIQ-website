@@ -1,4 +1,4 @@
-# Discovery call guide — free 20-minute call
+# Business Clarity Call guide — free 20-minute call
 
 **Purpose:** understand how the business handles new enquiries, decide together whether automation would genuinely help, and agree on a next step. Listen more than you talk. If it isn't a fit, say so.
 
@@ -88,7 +88,7 @@ Take notes straight into the qualification sheet below. Send a recap within 24 h
 | Expectations | Wants drafts for approval and safety flagging | Wants AI to reply automatically with no review |
 
 - **Mostly strong:** suggest Basic (one source) or Standard (several sources, job management system, on-call alerts) and book scoping.
-- **Mixed:** suggest a smaller first step, or an **optional** AI opportunity assessment if they're unsure what to automate.
+- **Mixed:** suggest a smaller first step, or an **optional** Business Improvement Assessment if they're unsure what to automate.
 - **Mostly weak:** say honestly that it may not be worth it yet, and offer to stay in touch.
 
 ## Red flags and how to respond
@@ -105,7 +105,7 @@ Take notes straight into the qualification sheet below. Send a recap within 24 h
 
 ## Recap email template (send within 24 hours)
 
-> **Subject:** Our discovery call — next steps
+> **Subject:** Our Business Clarity Call — next steps
 >
 > Hi {{first name}},
 >
@@ -114,7 +114,7 @@ Take notes straight into the qualification sheet below. Send a recap within 24 h
 > - The main frustrations are {{pain points, in their words}}.
 > - You use {{email platform}} and {{job system}}.
 >
-> **What I'd suggest:** {{package or "an AI opportunity assessment first" or "this may not be worth automating yet"}}.
+> **What I'd suggest:** {{package or "a Business Improvement Assessment first" or "this may not be worth automating yet"}}.
 >
 > **Next step:** {{a 45-minute technical scoping session on <date>}}, so I can confirm exactly what's possible before giving you a fixed quote.
 >

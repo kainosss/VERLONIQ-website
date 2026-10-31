@@ -3,25 +3,25 @@
 One page per stage: what happens, who does it, what has to be true before moving on, and which document to use. Timeframes are targets, not promises to customers.
 
 ```
-0 Lead → 1 Discovery call (free, 20 min) → 2 Technical scoping → 3 Proposal → 4 Acceptance
+0 Lead → 1 Business Clarity Call (free, 20 min) → 2 Technical scoping → 3 Proposal → 4 Acceptance
   → 5 Onboarding → 6 Build & test → 7 Go-live & hypercare → 8 Optional support → 9 Review & referral
 ```
 
-A paid AI opportunity assessment is **optional**. Offer it only when a business wants help working out *what* to automate. Trade businesses that already know their enquiry handling is the problem go straight from discovery to scoping and a direct quote. This matches the journey on the website.
+A paid Business Improvement Assessment is **optional** for automation customers. It's VERLONIQ's standalone consulting service, with findings, recommendations and an action plan the customer owns, so offer it on its own merits, not as a hurdle before automation. Trade businesses that already know their enquiry handling is the problem go straight from the Business Clarity Call to scoping and a direct automation proposal. This matches the journey on the website.
 
 ---
 
 ### 0. Lead
-- **Sources:** the website enquiry form (Formspree), booking a discovery call (Cal.com, once connected), referrals and direct outreach.
+- **Sources:** the website enquiry form (Formspree), booking a Business Clarity Call (Cal.com, once connected), referrals and direct outreach.
 - **Do:**
   - Reply within one business day.
   - Log the lead in a simple pipeline: a Google Sheet or CRM with columns for stage, next action and date.
-  - Book the discovery call.
-- **Exit when:** a discovery call is booked, or the lead is marked "not now" with a follow-up date.
+  - Book the Business Clarity Call.
+- **Exit when:** a Business Clarity Call is booked, or the lead is marked "not now" with a follow-up date.
 
-### 1. Discovery call — free, 20 minutes
+### 1. Business Clarity Call — free, 20 minutes
 - **Goal:** understand how the business handles enquiries today, decide whether the Lead Assistant is a good fit, and agree on the next step. **It's not a sales pitch.**
-- **Use:** [discovery call guide](03-discovery-call-guide.md), plus the [demonstration script](06-demo-script.md) if they want to see it (the demo takes 5 of the 20 minutes).
+- **Use:** [Business Clarity Call guide](03-discovery-call-guide.md), plus the [demonstration script](06-demo-script.md) if they want to see it (the demo takes 5 of the 20 minutes).
 - **Within 24 hours, send** a short recap email: what you heard, the suggested package, the next step, and what you need from them.
 - **Exit when one of these is true:**
   - **Qualified:** a book scoping session is booked.
@@ -38,7 +38,7 @@ A paid AI opportunity assessment is **optional**. Offer it only when a business 
   - The privacy policy situation.
   - That 10–20 example enquiries are available.
 - **Use:** the [onboarding checklist](05-onboarding-checklist.md) as a pre-check, so nothing surprises you after acceptance.
-- **Custom work:** for complex Custom work, offer a **paid scoping session or AI opportunity assessment**, credited against the build if they proceed (an internal decision; see the pricing guide).
+- **Custom work:** for complex Custom work, offer a **paid scoping session or Business Improvement Assessment**, credited against the build if they proceed (an internal decision; see the pricing guide).
 - **Exit when:** you can estimate hours confidently, or you decide it's out of scope.
 
 ### 3. Proposal — sent within 3 business days of scoping

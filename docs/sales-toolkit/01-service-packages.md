@@ -25,7 +25,7 @@ All packages share the same core: new enquiries are read by AI, sorted, checked 
 ## Basic: "Lead Assistant Starter"
 
 **Includes**
-- Discovery call, technical scoping call and a written scope.
+- Business Clarity Call, technical scoping call and a written scope.
 - Setup of the VERLONIQ Lead Assistant workflow on the **customer's own** n8n account (based on [`automation/n8n/`](../../automation/n8n/)).
 - **One** enquiry source: a website form **or** one email inbox.
 - AI classification: job category, job type, urgency, location, requirements, missing information, a reply draft, and safety flags for gas, electrical, water, flooding, carbon monoxide, break-ins, asbestos and vulnerable occupants.
@@ -67,7 +67,7 @@ Everything in Basic, plus:
 
 ## Custom
 
-For needs beyond Standard, quoted after a scoping session. If the customer wants help deciding what to automate first, an AI opportunity assessment can come first, but it's optional. Examples:
+For needs beyond Standard, quoted after a scoping session. If the customer wants help deciding what to automate first, a Business Improvement Assessment can come first, but it's optional. Examples:
 - After-hours triage with on-call rosters and escalation.
 - Multiple sites or brands.
 - Voicemail transcription.

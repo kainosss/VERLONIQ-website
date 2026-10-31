@@ -8,17 +8,27 @@ The website lives in [`public/`](public/). That is the only directory published 
 
 Open `public/index.html` in Chrome, Firefox, Safari or Edge. No installation is needed. Google Fonts require internet; system-font fallbacks are provided.
 
-To preview it the way it will be served (root-relative favicon, 404 page), run `python3 -m http.server 8000 -d public` and open http://localhost:8000. To also apply the Cloudflare security headers, run `npx wrangler dev` from the repository root.
+**To preview locally** (nothing is deployed):
+
+```bash
+git clone -b claude/phase-2-lead-generation https://github.com/kainosss/VERLONIQ-website.git
+```
+
+```bash
+cd VERLONIQ-website && ./scripts/preview.sh
+```
+
+Then open http://localhost:8787. This uses Cloudflare's local runtime and needs Node.js 20+. Without Node, run `./scripts/preview.sh --simple` and open http://localhost:8000. **The enquiry form is live in previews:** submissions reach the real Formspree inbox.
 
 ## What works
 
 - Responsive navigation (mobile, tablet, desktop), mobile menu, and highlighting of the section in view
-- Positioning: "Find out what your business could automate." Five services (AI and process automation, system integrations, AI opportunity assessments and workflow consulting, custom internal tools, ongoing support and AI advisory)
-- Customer journey: a free discovery call, then either an optional paid assessment or a direct implementation quote, then implementation and optional support
+- Positioning: "Smarter business decisions. Better systems. Less busywork." Two standalone service areas: **Business Consulting & Improvement** and **AI Automation & Business Systems**
+- Customer journey: a free 20-minute Business Clarity Call, then either an optional paid Business Improvement Assessment or a direct automation proposal, then optional implementation and ongoing support
 - **AI Lead Assistant demo** (simulated) for trade businesses: choose a fictional electrician, plumber, air-conditioning or security business, pick or type an enquiry, and see the job category, urgency, safety flags, location, requirements, missing information and an editable reply draft for approval, plus a demo lead register. Rules run in the browser (`public/lead-assistant.js`); no AI, nothing sent or stored. Ctrl/⌘ + Enter runs it.
 - "Working with VERLONIQ" engagement options (no published prices) and FAQ
 - Enquiry form ready for **Formspree** (name, business, email, optional phone, industry, team size, service, process description, consent), with validation, spam protection (honeypot, timing, optional Cloudflare Turnstile), a duplicate guard and success/error messages. It stays in **demo mode** (nothing is sent) until an endpoint is set in `public/config.js`.
-- "Book a Free Discovery Call" panel for the **Free 20-Minute Discovery Call** on **Cal.com**, connected via `calBookingUrl` in `public/config.js`. Every "Book a Free Discovery Call" button opens the panel, and its "Choose a time" button opens the Cal.com event in a new tab.
+- "Book a Free Clarity Call" panel for the **Free 20-Minute Business Clarity Call** on **Cal.com**, connected via `calBookingUrl` in `public/config.js`. Every "Book a Free Clarity Call" button opens the panel, and its "Choose a time" button opens the Cal.com event in a new tab.
 - Draft Privacy Policy (`public/privacy.html`) and Terms of Use (`public/terms.html`), both marked as drafts for review
 
 See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and booking.
@@ -29,7 +39,7 @@ See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and bookin
 
 ## Sales & delivery toolkit
 
-[`docs/sales-toolkit/`](docs/sales-toolkit/) covers selling and delivering the AI Lead Assistant: service packages, the sales process, a discovery call guide, a proposal template, an onboarding checklist, a 5-minute demo script and the cost structure. Internal pricing and the profitability workbook live in `docs/sales-toolkit/internal/`, which is **git-ignored** because this repository is public.
+[`docs/sales-toolkit/`](docs/sales-toolkit/) covers selling and delivering the AI Lead Assistant: service packages, the sales process, a Business Clarity Call guide, a proposal template, an onboarding checklist, a 5-minute demo script and the cost structure. Internal pricing and the profitability workbook live in `docs/sales-toolkit/internal/`, which is **git-ignored** because this repository is public.
 
 ## Tests
 

@@ -7,14 +7,14 @@ Everything is controlled by one file, [`public/config.js`](public/config.js). No
 | Integration | Status |
 | --- | --- |
 | Formspree enquiry form | **Configured:** `https://formspree.io/f/xwllqgvn`. The form is live wherever this config is deployed. A real end-to-end test is still to be done (see below). |
-| Cal.com booking | **Configured:** `https://cal.com/verloniq/free-20-minute-discovery-call`. The booking panel's "Choose a time" button opens it in a new tab. Only the free discovery call is public; paid assessment links are shared privately after a proposal is accepted. |
+| Cal.com booking | **Configured:** `https://cal.com/verloniq/free-20-minute-discovery-call`. The booking panel's "Choose a time" button opens it in a new tab. Only the free Business Clarity Call is public; paid assessment links are shared privately after a proposal is accepted. |
 | Contact email fallback | Not set. Add it once sales@ forwarding is confirmed. |
 | Cloudflare Turnstile | Not set (optional). |
 
 | Setting | Empty (current) | Set to a valid value |
 | --- | --- | --- |
 | `formspreeEndpoint` | **Demo mode.** The form validates but sends nothing. It shows "DEMO MODE — NOT CONNECTED", the submit button says "Check my details (demo)", and the pre-launch banner says "Enquiry form in demo mode". It never says an enquiry was sent. | **Live.** Submissions go to Formspree, which emails them to you. The demo labels disappear. The pre-launch banner stays. |
-| `calBookingUrl` | **Placeholder.** "Book a Free Discovery Call" opens a panel describing the call, labelled "ONLINE BOOKING NOT YET CONNECTED", and offers the enquiry form instead. No times are shown. | **Live.** The panel's "Choose a time" button opens your Cal.com event page in a new tab. |
+| `calBookingUrl` | **Placeholder.** "Book a Free Clarity Call" opens a panel describing the call, labelled "ONLINE BOOKING NOT YET CONNECTED", and offers the enquiry form instead. No times are shown. | **Live.** The panel's "Choose a time" button opens your Cal.com event page in a new tab. |
 | `contactEmail` | Not shown. | Shown as a fallback ("…or email sales@verloniq.com") if a submission fails. |
 | `turnstileSiteKey` | Off. | Shows Cloudflare Turnstile (an anti-bot check) on the form. Only works once `formspreeEndpoint` is set. |
 
@@ -43,7 +43,7 @@ Nothing else is collected. The automated tests check this exact list.
 
 ## Discovery-call booking
 
-- Every "Book a Free Discovery Call" button opens an on-site panel titled **Free 20-Minute Discovery Call**. It explains what the call covers and the possible next steps.
+- Every "Book a Free Clarity Call" button opens an on-site panel titled **Free 20-Minute Business Clarity Call**. It explains what the call covers and the possible next steps.
 - When live, **Choose a time** opens your Cal.com event page in a new tab. No Cal.com code runs on the site, no availability is shown on the site, and the site never says a booking is confirmed. Cal.com handles confirmation.
 - Visitors only ever see open slots for that one event type. They never see your calendar, other events or event titles.
 
@@ -69,7 +69,7 @@ Nothing else is collected. The automated tests check this exact list.
 1. **Account:** sign up with your business email and choose a **business username** such as `verloniq`, because it appears in the booking link. Turn on two-factor authentication.
 2. **Calendar:** connect your Google or Microsoft calendar **only so Cal.com can check when you're busy**. Visitors can't see your events.
 3. **Event type:**
-   - **Title:** Free 20-Minute Discovery Call. **Duration:** 20 minutes. **URL slug:** `free-20-minute-discovery-call` (configured).
+   - **Title:** Free 20-Minute Business Clarity Call, to match the website. Rename it in Cal.com if it still says "Discovery Call". **Duration:** 20 minutes. **URL slug:** `free-20-minute-discovery-call` (configured; it can stay as is).
    - **Location:** Google Meet, Zoom, Microsoft Teams or phone.
    - **Description:** you can reuse the "What we'll cover" points from the website panel.
    - **Booking questions:** name and email are the defaults. Add **Business name** (required) and **What would you like to automate?** (optional).
