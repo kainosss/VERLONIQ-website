@@ -27,6 +27,10 @@ See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and bookin
 
 [`automation/n8n/`](automation/n8n/) contains an importable n8n workflow template. It covers the full flow from enquiry webhook, AI classification and Google Sheets lead register to Gmail draft and human approval, along with schemas, the AI prompt, sample enquiries and setup and testing docs. **It isn't operational until it's imported and tested with real credentials**: see [`automation/n8n/README.md`](automation/n8n/README.md).
 
+## Sales & delivery toolkit
+
+[`docs/sales-toolkit/`](docs/sales-toolkit/) covers selling and delivering the AI Lead Assistant: service packages, the sales process, a discovery call guide, a proposal template, an onboarding checklist, a 5-minute demo script and the cost structure. Internal pricing and the profitability workbook live in `docs/sales-toolkit/internal/`, which is **git-ignored** because this repository is public.
+
 ## Tests
 
 ```bash
