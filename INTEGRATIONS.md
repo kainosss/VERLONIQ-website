@@ -119,3 +119,48 @@ Nothing else is collected. The automated tests check this exact list.
 2. Re-run the automated tests, then send **one real test enquiry** through the Cloudflare preview and confirm it reaches sales@.
 3. After you approve the final text, fill in the legal placeholders, remove the draft labels and `noindex`, and add `/privacy` and `/terms` to `sitemap.xml`.
 4. Leave the pre-launch banner and domain untouched until you say otherwise.
+
+---
+
+## AI Automation landing page (`/automation`)
+
+A separate sales page for the AI automation service, built for ads, search, LinkedIn, outreach and referrals. **The homepage is untouched:** the page has its own files (`public/automation.html`, `automation.css`, `automation.js`, `og-automation.png`). It shares only `public/config.js`, which it reads but never changes, and the site-wide `_headers`, which are unchanged. The only shared file edited is `sitemap.xml`, which gained one line. The homepage doesn't link to the page. Share the URL directly.
+
+**How it connects:**
+- **Booking:** "Book a Free Clarity Call" opens a booking panel, and its "Choose a time" button opens the same Cal.com event as the homepage (`calBookingUrl`) in a new tab. The page never says a call is booked; Cal.com confirms it.
+- **Enquiries:** "Send an Enquiry" opens the same enquiry form (same Formspree endpoint, Turnstile Site Key and spam protections). Each enquiry from this page also carries:
+  - `enquiry_source` = `automation-page`, a non-personal tag, so you can filter automation enquiries in Formspree;
+  - an email subject of "New VERLONIQ automation enquiry: …".
+- **Demo:** "Explore Our Automation Demo" links to the existing simulated demo at `/#demo` on the homepage. It isn't copied or changed.
+
+### Measuring conversions
+
+**Current state:** the site has **no analytics**, and this page doesn't add any.
+
+**What the page already records.** It logs these events in the visitor's own browser (`window.vqAnalytics`), and nothing is sent anywhere:
+
+| Event | When |
+| --- | --- |
+| `automation_page_view` | Page loaded |
+| `automation_booking_cta_click` | A "Book a Free Clarity Call" button was clicked (with its location, e.g. `hero`). **A click, not a booking.** |
+| `automation_booking_calendar_opened` | "Choose a time" opened Cal.com. **Still not a confirmed booking.** |
+| `automation_demo_click` | "Explore Our Automation Demo" was clicked |
+| `automation_enquiry_click` | "Send an Enquiry" (or a solution's enquiry link) was clicked |
+| `automation_enquiry_submitted` | Formspree confirmed the enquiry was accepted. Includes the chosen service category only. |
+
+The events never include names, emails, phone numbers, business names or messages.
+
+**To start measuring (each option needs your approval first, and none needs code beyond what's noted):**
+1. **Page views:** turn on **Cloudflare Web Analytics** for `verloniq.com`. It's free and cookieless, and reports page views per URL, including `/automation`.
+   - The site's Content-Security-Policy in `public/_headers` currently blocks Cloudflare's beacon. Allowing it means adding `https://static.cloudflareinsights.com` to `script-src` and `https://cloudflareinsights.com` to `connect-src`. That header also applies to the homepage (no visible change). I haven't made this change.
+2. **Button-click events:** **Cloudflare Zaraz** for `verloniq.com` (it has a free allowance; check current limits in the Cloudflare dashboard). If you turn it on, the page automatically forwards the events above to `zaraz.track()`; no code change is needed.
+   - Whatever tools you then add in Zaraz may need their own CSP and privacy-policy updates.
+3. **Real conversions:**
+   - **Booked calls:** these only exist in **Cal.com**, under Bookings. Cal.com can also send booking data to analytics or ad tools through its own integrations or webhooks. Each needs an account or ID and is not set up.
+   - **Enquiries:** in **Formspree**, filter submissions by `enquiry_source`.
+4. **Ad pixels (Meta, Google Ads, LinkedIn):** not added. They need ad-account IDs, CSP changes, a cookie and privacy-policy update, and your approval.
+
+### Before sending paid traffic
+- **Banner:** the page shows the same "PRE-LAUNCH PREVIEW" banner and footer note as the homepage. Remove both together when you launch.
+- **Privacy policy and terms:** still drafts. Finalise them before running ads.
+- **Search engines:** the page is indexable on `verloniq.com`. Preview (`*.workers.dev`) addresses stay `noindex`.
