@@ -13,7 +13,7 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 ## Content and business positioning
 - Brand: **VERLONIQ** (not FWDWORK).
 - Positioning: hybrid consulting + implementation for small and mid-sized Australian businesses — AI and business process automation, system integrations, AI opportunity assessments and workflow consulting, custom internal tools, ongoing support and AI advisory.
-- Customer journey: free 30-minute workflow discovery call → optional paid AI opportunity assessment **or** a direct implementation quote → implementation → optional monthly support/advisory. A paid assessment is never mandatory.
+- Customer journey: free 20-minute discovery call → optional paid AI opportunity assessment **or** a direct implementation quote → implementation → optional monthly support/advisory. A paid assessment is never mandatory.
 - Main message: "Find out what your business could automate." Primary CTA: "Book a Free Discovery Call". Don't publish prices or promise savings without evidence.
 - Be honest about what exists. The AI Lead Assistant demo (`public/lead-assistant.js`) is local JavaScript rules, **not a real AI integration**, and must stay clearly labelled "simulated" until it's connected to a real backend. Never put n8n webhook URLs, secrets or API keys in `public/`.
 - The n8n workflow template lives in `automation/n8n/`. Edit `code/`, `prompts/` or `schema/`, then run `node automation/n8n/build-workflow.mjs`; never hand-edit the generated workflow JSON. Don't describe it as operational until it has been imported and tested with real accounts.
@@ -21,7 +21,7 @@ VERLONIQ is an Australian AI automation and business systems agency preparing to
 - Sales and delivery docs live in `docs/sales-toolkit/`. **This repository is public:** never commit prices, margins or customer details. Internal pricing stays in `docs/sales-toolkit/internal/` (git-ignored). Keep VERLONIQ positioned as an AI automation and business systems agency, not a financial consultancy.
 - Do not invent customer testimonials, partner endorsements, completed case studies, demonstrated ROI, or promised automations.
 - Pricing is illustrative until the founder confirms offerings and rates.
-- The enquiry form is wired to the founder's Formspree endpoint in `public/config.js`, so it sends real enquiries wherever that config is deployed. Booking (Cal.com) is still a placeholder until the founder supplies its URL. See `INTEGRATIONS.md`; never invent endpoints or URLs, and never let automated tests send real submissions.
+- The enquiry form is wired to the founder's Formspree endpoint in `public/config.js`, so it sends real enquiries wherever that config is deployed. Booking uses the founder's Cal.com free 20-minute discovery call (`calBookingUrl` in `public/config.js`), opened from the existing booking panel. Never put paid assessment booking links on the public site; those are shared privately after a proposal is accepted. See `INTEGRATIONS.md`; never invent endpoints or URLs, and never let automated tests send real submissions.
 
 ## Development approach
 - Start with current `index.html` (no build step required). The website lives in `public/`, served as static assets by a Cloudflare **Workers** project via Workers Builds. `wrangler.jsonc` must stay at the repo root, because preview builds fail without it. Keep internal docs like this file outside `public/`.

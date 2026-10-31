@@ -2,8 +2,6 @@
 
 **Purpose:** understand how the business handles new enquiries, decide together whether automation would genuinely help, and agree on a next step. Listen more than you talk. If it isn't a fit, say so.
 
-> **Call length:** this guide is built for **20 minutes**. The website currently advertises a **30-minute** call. Align the two before launch.
-
 ## Agenda (20 minutes)
 
 | Time | Section | Notes |

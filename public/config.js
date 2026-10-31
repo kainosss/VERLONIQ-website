@@ -13,10 +13,10 @@ window.VERLONIQ_CONFIG = {
   // Empty = enquiry form stays in DEMO MODE (validates, but sends nothing).
   formspreeEndpoint: "https://formspree.io/f/xwllqgvn",
 
-  // Public Cal.com link for the "Free 30-Minute Workflow Discovery Call" event type,
-  // e.g. "https://cal.com/verloniq/discovery-call".
+  // Public Cal.com link for the free 20-minute discovery call event type.
+  // Only the FREE discovery call belongs here. Paid assessments use private links shared after acceptance.
   // Empty = "Book a Free Discovery Call" shows a "booking not yet connected" placeholder.
-  calBookingUrl: "",
+  calBookingUrl: "https://cal.com/verloniq/free-20-minute-discovery-call",
 
   // Optional public contact email shown if a submission fails, e.g. "sales@verloniq.com".
   // Leave empty until email forwarding for the address is confirmed working.

@@ -18,7 +18,7 @@ To preview it the way it will be served (root-relative favicon, 404 page), run `
 - **AI Lead Assistant demo** (simulated) for trade businesses: choose a fictional electrician, plumber, air-conditioning or security business, pick or type an enquiry, and see the job category, urgency, safety flags, location, requirements, missing information and an editable reply draft for approval, plus a demo lead register. Rules run in the browser (`public/lead-assistant.js`); no AI, nothing sent or stored. Ctrl/⌘ + Enter runs it.
 - "Working with VERLONIQ" engagement options (no published prices) and FAQ
 - Enquiry form ready for **Formspree** (name, business, email, optional phone, industry, team size, service, process description, consent), with validation, spam protection (honeypot, timing, optional Cloudflare Turnstile), a duplicate guard and success/error messages. It stays in **demo mode** (nothing is sent) until an endpoint is set in `public/config.js`.
-- "Book a Free Discovery Call" panel for the **Free 30-Minute Workflow Discovery Call** on **Cal.com**. It shows a placeholder until a booking URL is set in `public/config.js`.
+- "Book a Free Discovery Call" panel for the **Free 20-Minute Discovery Call** on **Cal.com**, connected via `calBookingUrl` in `public/config.js`. Every "Book a Free Discovery Call" button opens the panel, and its "Choose a time" button opens the Cal.com event in a new tab.
 - Draft Privacy Policy (`public/privacy.html`) and Terms of Use (`public/terms.html`), both marked as drafts for review
 
 See [`INTEGRATIONS.md`](INTEGRATIONS.md) for how to activate the form and booking.

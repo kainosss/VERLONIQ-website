@@ -49,7 +49,7 @@ Website / referral
 
 These are tracked in each document and summarised here. Until each is made, treat the related documents as drafts.
 
-- [ ] **Discovery call length.** This toolkit uses **20 minutes**, but the live website and booking panel say **30 minutes**. Choose one and update the other.
+- [x] **Discovery call length:** settled at **20 minutes**. The website and the Cal.com event (`free-20-minute-discovery-call`) match.
 - [ ] **Prices.** Confirm the starting prices in `internal/pricing-guide.md` after reviewing the profitability workbook with your own cost rate.
 - [ ] **GST.** Confirm with an accountant whether VERLONIQ is or must be registered for GST, then show prices ex-GST or inc-GST consistently.
 - [ ] **Terms of engagement.** A lawyer-reviewed services agreement (liability cap, IP, data processing, warranty, termination) is needed before the first signed proposal.
