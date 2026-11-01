@@ -5,19 +5,50 @@
   "description": "What a trusted backend (never a browser) POSTs to the n8n webhook. The request must also carry the shared secret header configured on the Webhook node.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["business_id", "enquiry_text"],
+  "required": [
+    "business_id",
+    "enquiry_text"
+  ],
   "properties": {
     "business_id": {
       "type": "string",
-      "enum": ["electrical", "plumbing", "aircon", "security"],
-      "description": "Which business profile to use. Edit BUSINESSES in code/02-build-ai-request.js for a real client."
+      "pattern": "^[a-z0-9-]{2,40}$",
+      "description": "Must be a key of `businesses` in the Workflow Configuration node (code/00-config.js). The template ships with fictional demo profiles: electrical, plumbing, aircon, security, cleaning."
     },
-    "enquiry_text": { "type": "string", "minLength": 15, "maxLength": 4000, "description": "The customer's message, as received." },
-    "customer_name": { "type": "string", "maxLength": 100 },
-    "customer_email": { "type": "string", "maxLength": 254, "format": "email" },
-    "customer_phone": { "type": "string", "maxLength": 20 },
-    "source": { "type": "string", "maxLength": 40, "description": "e.g. website_form, email, test" },
-    "submitted_at": { "type": "string", "format": "date-time" }
+    "enquiry_text": {
+      "type": "string",
+      "minLength": 15,
+      "maxLength": 4000,
+      "description": "The customer's message, as received."
+    },
+    "customer_name": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "customer_email": {
+      "type": "string",
+      "maxLength": 254,
+      "format": "email"
+    },
+    "customer_phone": {
+      "type": "string",
+      "maxLength": 20,
+      "pattern": "^[0-9+()\\s-]{8,20}$"
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 40,
+      "description": "e.g. website_form, email, test"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "submission_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{6,100}$",
+      "description": "Optional unique id from the calling system. A retry with the same id is treated as a duplicate, so retries never create a second lead."
+    }
   },
   "examples": [
     {
