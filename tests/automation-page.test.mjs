@@ -73,3 +73,18 @@ test('sitemap lists the homepage and /automation', () => {
   assert.match(sm, /<loc>https:\/\/verloniq\.com\/<\/loc>/);
   assert.match(sm, /<loc>https:\/\/verloniq\.com\/automation<\/loc>/);
 });
+
+test('homepage sections follow the customer journey: hero, problems, services, how it works, pricing, demo, FAQ, final CTA', () => {
+  const order = [...home.matchAll(/<section(?: class="([^"]*)")?(?: id="([^"]*)")?/g)].map((m) => m[2] || m[1]);
+  assert.deepEqual(order, ['hero', 'problems', 'solutions', 'how', 'pricing', 'demo', 'faq', 'contact']);
+  const demo = home.slice(home.indexOf('<section class="demo" id="demo">'), home.indexOf('<section class="faq-area" id="faq">'));
+  assert.match(demo, /id="leadRegister"/, 'the lead register moved with the demo');
+  const nav = [...home.match(/<nav class="nav-links"[^]*?<\/nav>/)[0].matchAll(/href="#([a-z]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(nav, ['solutions', 'how', 'pricing', 'demo', 'faq'], 'nav anchors follow the page order');
+});
+
+test('automation page: Home is the first nav link and a back-to-home link sits above the hero headline', () => {
+  assert.match(page, /<nav class="nav-links" id="navLinks"[^>]*>\s*<a href="\/">Home<\/a><a href="#problems">/);
+  const hero = page.slice(page.indexOf('<div class="hero-copy'), page.indexOf('<h1'));
+  assert.match(hero, /<a class="back-home" href="\/"><span aria-hidden="true">←<\/span> Back to home<\/a>/);
+});
