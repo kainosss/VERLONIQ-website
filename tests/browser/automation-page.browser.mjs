@@ -216,6 +216,44 @@ try {
   }
   ok('homepage: nav, AI automation card and footer links to /automation are visible, keyboard-focusable with a focus ring and open the page (375/1051/1280px); nav stays on one line');
 
+  // 11. Automation page → homepage: "Home" (first nav link, also in the mobile menu) and "← Back to home"
+  for (const [w, h] of [[375, 812], [1051, 800], [1280, 900]]) {
+    p = await page({ viewport: { width: w, height: h }, mobile: w < 800 });
+    assert.equal(await p.evaluate(() => document.querySelector('#navLinks a').getAttribute('href')), '/', 'Home is the first nav link');
+    if (w >= 1051) assert.equal(await p.evaluate(() => [...document.querySelectorAll('#navLinks a')].every((a) => a.getBoundingClientRect().height < 24) && document.querySelector('.nav-cta').getBoundingClientRect().height < 56), true, `header fits on one line at ${w}px`);
+    else { await p.click('#menuToggle'); await p.waitForSelector('#navLinks.open'); }
+    assert.equal(await p.isVisible('#navLinks a[href="/"]'), true);
+    await Promise.all([p.waitForURL(BASE + '/'), p.click('#navLinks a[href="/"]')]);
+    assert.match(await p.title(), /Business improvement & AI automation/);
+    await p.goBack(); await p.waitForURL(/\/automation$/);
+    const back = p.locator('.hero .back-home');
+    assert.equal(await back.isVisible(), true); assert.equal(await back.textContent(), '← Back to home');
+    assert.ok((await back.boundingBox()).y < (await p.locator('h1').boundingBox()).y, 'back link sits above the headline');
+    await p.keyboard.press('Tab'); await back.focus(); assert.equal(await back.evaluate((el) => getComputedStyle(el).outlineStyle !== 'none'), true, 'focus ring');
+    await Promise.all([p.waitForURL(BASE + '/'), p.keyboard.press('Enter')]);
+    assert.deepEqual(p.errs, []); await p.context().close();
+  }
+  ok('automation page: Home is the first nav link (desktop bar and mobile menu) and "← Back to home" sits above the headline; both open / (375/1051/1280px; keyboard too); header stays on one line');
+
+  // 12. Homepage section order, anchor scrolling under the sticky header, and scroll-triggered reveals
+  for (const [w, h] of [[375, 812], [768, 1024], [1280, 900]]) {
+    p = await page({ path: '/', viewport: { width: w, height: h }, mobile: w < 800 });
+    const order = await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id || s.className));
+    assert.deepEqual(order, ['hero', 'problems', 'solutions', 'how', 'pricing', 'demo', 'faq', 'contact']);
+    const tops = await p.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.getBoundingClientRect().top + scrollY));
+    assert.deepEqual(tops, [...tops].sort((a, b) => a - b), 'sections are laid out in document order');
+    for (const id of ['solutions', 'how', 'pricing', 'demo', 'faq']) {
+      if (w < 1051) { await p.click('#menuToggle'); await p.waitForSelector('#navLinks.open'); }
+      await p.click(`#navLinks a[href="#${id}"]`);
+      await p.waitForFunction((id) => Math.abs(document.getElementById(id).getBoundingClientRect().top - document.getElementById('siteHeader').getBoundingClientRect().height) < 4, id, { timeout: 5000 });
+      await p.waitForTimeout(150);
+      assert.equal(await p.evaluate((id) => document.querySelector(`#${id} .section-top.reveal, #${id} .demo-intro.reveal`).classList.contains('in'), id), true, `${id} heading revealed`);
+      if (w >= 1051) assert.equal(await p.evaluate((id) => document.querySelector(`#navLinks a[href="#${id}"]`).classList.contains('active'), id), true, `${id} nav link highlighted`);
+    }
+    assert.deepEqual(p.errs, []); await p.context().close();
+  }
+  ok('homepage: sections in the requested order; each nav link scrolls its section to just below the sticky header, reveals its heading and (desktop) highlights the link — 375/768/1280px');
+
   console.log(`\nALL ${n} AUTOMATION PAGE CHECKS PASSED (Formspree, Turnstile and Cal.com mocked; nothing was sent)`);
 } catch (e) {
   console.error('FAIL', e.message); process.exitCode = 1;
