@@ -10,8 +10,16 @@ const js = read('automation.js');
 const css = read('automation.css');
 const home = read('index.html');
 
-test('homepage does not load or link the automation page assets (strict isolation)', () => {
-  assert.doesNotMatch(home, /automation\.(?:js|css|html)|href="\/automation"/);
+test('homepage never loads the automation page assets (styles and scripts stay isolated)', () => {
+  assert.doesNotMatch(home, /automation\.(?:js|css|html)/);
+});
+
+test('homepage links to /automation exactly three times: main nav, AI automation card and footer', () => {
+  const links = [...home.matchAll(/<a [^>]*href="\/automation"[^>]*>([^<]*)/g)].map((m) => m[1].trim());
+  assert.deepEqual(links, ['AI Automation', 'Explore AI Automation', 'AI Automation']);
+  assert.match(home, /<nav class="nav-links"[^]*?<a href="\/automation">AI Automation<\/a>[^]*?<\/nav>/);
+  assert.match(home, /<nav class="footer-meta"[^]*?<a href="\/automation">AI Automation<\/a>[^]*?<\/nav>/);
+  assert.match(home, /<div class="area-actions">[^]*?Request an automation proposal<\/button><a class="text-link" href="\/automation">Explore AI Automation <span aria-hidden="true">→<\/span><\/a>/);
 });
 
 test('automation page uses only its own assets plus the shared public config', () => {
