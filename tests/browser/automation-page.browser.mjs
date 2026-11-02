@@ -81,9 +81,10 @@ try {
     'AI Customer Enquiry Assistant', 'Automated Quote Follow-Ups', 'Business Systems Integration & Reporting',
     'Free discovery call', 'Technical scoping', 'Tailored proposal', 'Implementation', 'Testing & handover', 'Ongoing support', 'No paid assessment required']) assert.ok(text.includes(s), s);
   assert.ok(await p.locator('#solutions .tag-review').count() >= 3, 'staff-review steps are marked');
-  assert.doesNotMatch(text, /\$\s?\d|AUD\s?\d|\d+\s?% (?:faster|saving|more)|guarantee/i, 'no prices, statistics or guarantees');
+  assert.deepEqual([...new Set(text.match(/\$[\d,]+/g))].sort(), ['$2,500', '$299'], 'only the approved starting prices');
+  assert.doesNotMatch(text.replace(/no guaranteed uptime/g, ''), /\d+\s?% (?:faster|saving|more)|guarantee/i, 'no statistics or guarantees');
   assert.doesNotMatch(text, /testimonial|case study|clients include|trusted by/i, 'no invented social proof');
-  ok('problems, three solutions (with automatic vs staff-review steps), process, pricing basis and ownership are present; no prices, stats, guarantees or testimonials');
+  ok('problems, three solutions (with automatic vs staff-review steps), process, pricing and ownership are present; only approved starting prices; no stats, guarantees or testimonials');
 
   // 3. Booking: every primary CTA opens the booking panel; "Choose a time" opens the same Cal.com event as the homepage
   const bookBtns = p.locator('main [data-open-booking]');
