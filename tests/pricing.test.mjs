@@ -10,12 +10,6 @@ const home = read('index.html');
 const auto = read('automation.html');
 const text = (html) => html.replace(/<(style|script)[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
 const APPROVED = { assessment: '$795', implementation: '$2,500', support: '$299' };
-const GST_VARIANTS = {
-  pending: 'GST: VERLONIQ’s GST registration status is being finalised. Any applicable GST will be shown clearly with these prices and on every written quote.',
-  'registered-inclusive': 'All prices include GST.',
-  'registered-exclusive': 'Prices exclude GST. GST of 10% is added to the prices shown.',
-  'not-registered': 'VERLONIQ is not registered for GST, so no GST is charged.',
-};
 const card = (html, heading) => { const i = html.indexOf(heading); assert.ok(i > 0, heading); return html.slice(html.lastIndexOf('<article', i), html.indexOf('</article>', i)); };
 
 test('only the approved starting prices appear anywhere on the public pages', () => {
@@ -64,24 +58,28 @@ test('no unsupported support promises anywhere (24/7, uptime, unlimited, immedia
   }
 });
 
-test('disclosures: AUD, confirmed after scoping, third-party costs, ownership, larger work costs more, support optional', () => {
-  const h = text(home.slice(home.indexOf('<p class="pricing-note">'), home.indexOf('</p>', home.indexOf('<p class="pricing-note">'))));
-  for (const re of [/All prices are in AUD/, /starting prices for clearly defined entry-level scopes/, /larger or more complex projects cost more/, /fixed project price is confirmed in writing after scoping/, /Third-party software subscriptions, AI API usage and platform licences are charged separately/, /you generally own your connected software accounts/, /Ongoing support is optional/, /don’t need an assessment before an implementation/]) assert.match(h, re);
-  const a = text(auto.slice(auto.indexOf('<div class="ownership'), auto.indexOf('</section>', auto.indexOf('<div class="ownership'))));
-  for (const re of [/All prices are in AUD/, /larger or more complex projects cost more/, /confirmed in writing after scoping/, /Ongoing support is optional/, /own your connected software accounts/, /Third-party software, API usage and AI processing costs may be billed separately/]) assert.match(a, re);
+const STATEMENT = 'All prices are in AUD. GST is not charged. Final project pricing is confirmed following scoping. Third-party software and AI usage costs may apply.';
+
+test('the approved pricing statement appears beneath the pricing on both pages, word for word', () => {
+  for (const [html, section] of [[home, '<section class="pricing" id="pricing">'], [auto, '<section class="pricing" id="pricing"']]) {
+    const sec = html.slice(html.indexOf(section), html.indexOf('</section>', html.indexOf(section)));
+    const notes = [...sec.matchAll(/<p class="pricing-note[^"]*">([\s\S]*?)<\/p>/g)].map((m) => text(m[1]).trim());
+    assert.deepEqual(notes, [STATEMENT]);
+    assert.ok(sec.lastIndexOf('<p class="pricing-note') > sec.lastIndexOf('class="price"'), 'statement sits beneath the prices');
+  }
 });
 
-test('GST approval gate: one approved GST sentence, identical on both pages', () => {
-  const notes = [home, auto].map((html) => [...html.matchAll(/<span class="gst-note" data-gst="([a-z-]+)">([^<]+)<\/span>/g)]);
-  for (const n of notes) assert.equal(n.length, 1, 'exactly one GST note per page');
-  const [[, variant, sentence], [, variant2, sentence2]] = notes.map((n) => n[0]);
-  assert.equal(variant, variant2, 'same GST variant on both pages');
-  assert.equal(sentence, sentence2);
-  assert.ok(variant in GST_VARIANTS, `unknown GST variant "${variant}"`);
-  assert.equal(sentence, GST_VARIANTS[variant], 'use the exact approved wording from docs/pricing-gst-wording.md');
-  if (variant === 'registered-exclusive') {
-    for (const html of [home, auto]) for (const m of text(html).matchAll(/\$[\d,]+(?! \+ GST)/g)) assert.fail(`${m[0]} needs "+ GST" when prices exclude GST`);
+test('GST: not registered (founder-confirmed) — no GST added, no "+ GST", no GST-inclusive wording', () => {
+  for (const html of [home, auto]) {
+    const notes = [...html.matchAll(/<span class="gst-note" data-gst="([a-z-]+)">([^<]+)<\/span>/g)];
+    assert.equal(notes.length, 1, 'exactly one GST note per page');
+    assert.equal(notes[0][1], 'not-registered');
+    assert.equal(notes[0][2], 'GST is not charged.');
+    const t = text(html);
+    assert.doesNotMatch(t, /\+\s?GST|inc(l\.?|luding|lusive of)? GST|GST[- ]inclusive|ex(cl\.?|cluding)? GST|GST[- ]exclusive|10\s?%/i);
+    assert.deepEqual([...t.matchAll(/GST[^.]*\./g)].map((m) => m[0]).filter((x) => !/^GST is not charged\.$/.test(x) && !/GST is not charged\./.test(x)), [], 'only "GST is not charged" wording');
   }
+  assert.match(text(auto), /Prices are in AUD and GST is not charged\./);
 });
 
 test('/automation FAQ quotes the same prices and scope as the pricing section', () => {

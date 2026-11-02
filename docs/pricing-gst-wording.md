@@ -1,14 +1,18 @@
-# Starting prices: GST wording (approval gate)
+# Starting prices: GST treatment
 
-**Status:** GST registration status has **not** been confirmed. The repository's own checklist (`docs/sales-toolkit/README.md`, "Confirm with an accountant whether VERLONIQ is or must be registered for GST") is still open, and the ABN is still "to be confirmed" in the draft legal pages.
+**Status: VERLONIQ is not registered for GST.** The founder confirmed this in November 2026. Prices are shown with **no GST added**. Don't label them "+ GST" or "GST-inclusive".
 
-Until the founder confirms it, the website uses the **pending** wording below. **Don't merge or publish the pricing PR until the GST status is confirmed and the matching variant is applied.**
+The approved statement, shown beneath the pricing on both the homepage and `/automation`:
 
-> This is general information to help choose wording, not tax or legal advice. Confirm the GST position, and whether prices for consumers must be shown GST-inclusive, with your accountant.
+> All prices are in AUD. GST is not charged. Final project pricing is confirmed following scoping. Third-party software and AI usage costs may apply.
+
+In the HTML, "GST is not charged." sits in `<span class="gst-note" data-gst="not-registered">`. `tests/pricing.test.mjs` checks that:
+- the statement is identical on both pages
+- no "+ GST", "inc GST", "GST-inclusive" or "10%" wording appears anywhere on the public pages
 
 ## Where the prices appear (all must match)
 
-| Page | Element | Current text |
+| Page | Element | Text |
 | --- | --- | --- |
 | Homepage, AI Automation service card | `.start-price` | Projects from **$2,500** |
 | Homepage, Business Consulting service card | `.start-price` | Focused assessments from **$795** |
@@ -17,33 +21,9 @@ Until the founder confirms it, the website uses the **pending** wording below. *
 | Homepage, Working with us | Support card `.price` | From **$299** per month |
 | `/automation`, Pricing | Implementation card `.price` | From **$2,500** per project |
 | `/automation`, Pricing | Support card `.price` | From **$299** per month |
-| `/automation`, FAQ "How much does it cost?" | text | from $2,500 … from $299 a month |
-| Both pages | `.pricing-note .gst-note` | GST sentence (see below) |
+| `/automation`, FAQ "How much does it cost?" | text | from $2,500 … from $299 a month; "Prices are in AUD and GST is not charged." |
 
-`tests/pricing.test.mjs` checks that all of these agree, and that the GST sentence is one of the approved variants and identical on both pages.
-
-## Variants for `<span class="gst-note" data-gst="…">`
-
-### 1. `pending` (current, interim)
-> GST: VERLONIQ's GST registration status is being finalised. Any applicable GST will be shown clearly with these prices and on every written quote.
-
-### 2. `registered-inclusive` (registered for GST; the prices shown **include** GST)
-> All prices include GST.
-
-- No other change is needed. The $2,500, $795 and $299 figures are then GST-inclusive amounts.
-- If the prices were meant to be **ex-GST** amounts, they would become $2,750, $874.50 and $328.90 inc-GST. Decide which you intend; don't rely on rounding.
-
-### 3. `registered-exclusive` (registered for GST; prices shown **exclude** GST, mainly for business customers)
-> Prices exclude GST. GST of 10% is added to the prices shown.
-
-- Also add " + GST" after every price in the table above, e.g. `From $2,500 + GST` and `Projects from $2,500 + GST`.
-- Ask your accountant whether ex-GST pricing is appropriate if you also sell to consumers.
-
-### 4. `not-registered` (not registered for GST)
-> VERLONIQ is not registered for GST, so no GST is charged.
-
-## How to apply a variant
-1. In `public/index.html` and `public/automation.html`, replace the `gst-note` span. Keep the class, set `data-gst` to the variant name and use the exact sentence above.
-2. For `registered-exclusive`, add " + GST" to each price listed in the table.
-3. Run `node --test tests/*.test.mjs`. The pricing test fails if the pages disagree or the wording isn't an approved variant.
-4. Also update the proposal template (`docs/sales-toolkit/04-proposal-template.md`) so quotes use the same treatment.
+## If VERLONIQ registers for GST later
+This needs the founder's approval and a check with the accountant first. Then:
+- Decide whether the advertised prices will include GST (consumer-friendly) or exclude it (state "+ GST" next to every price above).
+- Update the statement on both pages, `data-gst`, the GST check in `tests/pricing.test.mjs`, `CLAUDE.md` and `docs/sales-toolkit/04-proposal-template.md` together.
