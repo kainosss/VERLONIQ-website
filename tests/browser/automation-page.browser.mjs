@@ -54,7 +54,7 @@ try {
   // 1. Direct load, SEO and sharing metadata
   let p = await page();
   assert.equal(p.status, 200, '/automation loads directly');
-  assert.match(await p.title(), /AI Automation for Small Businesses in Australia/);
+  assert.match(await p.title(), /Workflow Automation & Business Systems for Small Businesses/);
   assert.equal(await p.textContent('h1'), 'Less admin.More time running your business.');
   assert.equal(await p.locator('h1').count(), 1, 'exactly one h1');
   const meta = await p.evaluate(() => ({
@@ -211,7 +211,7 @@ try {
       await l.focus(); assert.equal(await l.evaluate((el) => getComputedStyle(el).outlineStyle !== 'none' && getComputedStyle(el).outlineWidth !== '0px'), true, 'visible focus ring');
     }
     if (w >= 1051) assert.equal(await p.evaluate(() => [...document.querySelectorAll('#navLinks a')].every((a) => a.getBoundingClientRect().height < 24) && document.querySelector('.nav-cta').getBoundingClientRect().height < 56), true, `nav fits on one line at ${w}px`);
-    await p.keyboard.press('Enter'); await p.waitForURL(/\/automation$/); assert.match(await p.title(), /AI Automation for Small Businesses/);
+    await p.keyboard.press('Enter'); await p.waitForURL(/\/automation$/); assert.match(await p.title(), /Workflow Automation & Business Systems/);
     assert.deepEqual(p.errs, []); await p.context().close();
   }
   ok('homepage: nav, AI automation card and footer links to /automation are visible, keyboard-focusable with a focus ring and open the page (375/1051/1280px); nav stays on one line');
@@ -224,7 +224,7 @@ try {
     else { await p.click('#menuToggle'); await p.waitForSelector('#navLinks.open'); }
     assert.equal(await p.isVisible('#navLinks a[href="/"]'), true);
     await Promise.all([p.waitForURL(BASE + '/'), p.click('#navLinks a[href="/"]')]);
-    assert.match(await p.title(), /Business improvement & AI automation/);
+    assert.match(await p.title(), /Business systems, automation & business improvement/);
     await p.goBack(); await p.waitForURL(/\/automation$/);
     const back = p.locator('.hero .back-home');
     assert.equal(await back.isVisible(), true); assert.equal(await back.textContent(), '← Back to home');
