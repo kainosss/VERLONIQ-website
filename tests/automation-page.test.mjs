@@ -41,11 +41,13 @@ test('demo is described as simulated, not a live AI service', () => {
   assert.match(page, /not connected to a live AI model or to any real customer systems/);
 });
 
-test('no published prices, statistics, guarantees or regulated-advice claims', () => {
-  const text = page.replace(/<[^>]+>/g, ' ');
-  assert.doesNotMatch(text, /\$\s?\d|\bAUD\b|\d+\s?%|guarantee|ROI\b/i);
+test('only the approved starting prices; no statistics, guarantees or regulated-advice claims', () => {
+  const text = page.replace(/<(style|script)[^>]*>[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/no guaranteed uptime/g, '');
+  assert.deepEqual([...new Set(text.match(/\$[\d,]+/g))].sort(), ['$2,500', '$299'], 'approved automation-page prices only (tests/pricing.test.mjs checks scope and consistency)');
+  assert.doesNotMatch(text, /\d+\s?%|guarantee|ROI\b/i);
   assert.doesNotMatch(text, /financial advice|tax advice|legal advice|accounting advice/i);
-  for (const word of ['Free', 'Quoted', 'Monthly']) assert.match(page, new RegExp(`class="price">${word}<`));
+  assert.match(page, /class="price">Free</);
+  for (const amount of ['$2,500', '$299']) assert.match(page, new RegExp(`class="price"><span class="price-from">From</span>\\${amount.replace(',', ',')}<`));
 });
 
 test('enquiries are tagged with a non-sensitive source identifier', () => {

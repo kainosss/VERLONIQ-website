@@ -95,6 +95,8 @@ section{padding:110px 0}.section-top{display:flex;align-items:end;justify-conten
 .price-card h3{font-size:24px;letter-spacing:-.05em;margin:7px 0 4px}.price-card p{color:#afc0af;font-size:14px;line-height:1.7;margin:0 0 6px}.price-card.highlight p{color:#3f5a40}
 .price{font-family:'Space Grotesk';font-size:40px;font-weight:700;line-height:1.2;letter-spacing:-.07em;margin:6px 0 12px}.price span{font-family:'DM Sans';font-size:12px;font-weight:700;letter-spacing:normal;opacity:.75;margin-left:6px}
 .price-card .btn{margin-top:18px;align-self:flex-start}
+.price .price-from{font-family:'DM Sans';font-size:13px;font-weight:700;letter-spacing:normal;opacity:.75;margin:0 6px 0 0}.price-card p.scope-note{font-size:12px;line-height:1.6;color:#8eac94;margin:6px 0 0}
+.pricing-note{margin:18px 0 0;font-size:12.5px;line-height:1.7;color:#8eac94;max-width:900px}
 .ownership{margin-top:18px;padding:28px 30px;border:1px solid #30433a;border-radius:22px;background:#132019;display:grid;grid-template-columns:.7fr 1.3fr;gap:30px;align-items:start}.ownership h3{font-size:24px;letter-spacing:-.05em;margin:0}
 .ownership ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}.ownership li{display:grid;grid-template-columns:18px 1fr;gap:10px;font-size:14px;color:#c1d1c0}.ownership li:before{content:'✓';color:var(--lime);font-weight:800}
 .price-card.highlight .btn-dark{background:#193321;color:#efffe0;border-color:#193321}
