@@ -57,8 +57,10 @@ export default {
       });
       const out = await res.json().catch(() => ({}));
       if (!res.ok || !out.ok) return json({ error: 'The Lead Assistant could not process this enquiry right now.' }, 502);
-      // n8n returns a summary ({ lead_id, status, urgency, safety_flag, draft_created }).
-      // To show the full result in the demo UI, extend the workflow's "Respond: Lead Saved" node
+      // n8n (workflow v2) returns a summary ({ ok, lead_id, status, assessed_urgency, safety_flag, draft_created,
+      // draft_status, staff_notified }) - or HTTP 503 { status: 'register_failed' } if the lead register was down
+      // (staff are emailed the lead). Send a submission_id with each request to make retries safe.
+      // To show the full result in the demo UI, extend the workflow's "Build Response" node
       // to return the fields the page needs, then map them to the shape in
       // automation/n8n/schema/lead-result.schema.json here.
       return json(out, 200);

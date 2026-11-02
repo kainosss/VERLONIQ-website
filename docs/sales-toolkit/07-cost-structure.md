@@ -30,7 +30,7 @@ Use this page to explain costs in the Business Clarity Call and proposal. It's w
    monthly AI cost ≈ enquiries per month × (input tokens × input price + output tokens × output price)
    ```
 
-   Use the **Customer Cost Estimate** tab in `internal/profitability-worksheet.xlsx`. At the example assumptions there (150 enquiries a month, roughly 2,500 input and 2,500 output tokens each, published Claude Opus 5.5 rates as at October 2026, and an example exchange rate), it comes to **roughly A$14 a month**. Treat this as an order of magnitude only: verify the current rates, and measure real token usage during testing.
+   Use the **Customer Cost Estimate** tab in `internal/profitability-worksheet.xlsx`. At the example assumptions there (150 enquiries a month, roughly 2,500 input and 2,500 output tokens each, published Claude Opus 5.5 rates as at October 2026, and an example exchange rate), it comes to **roughly A$14 a month**. Treat this as an order of magnitude only: verify the current rates, and measure real token usage during testing. A worked estimate with all assumptions (AI per model, n8n Cloud vs self-hosting, example monthly total) is in `automation/n8n/docs/operating-costs.md`; the workflow records real token usage per lead in the `ai_tokens` column.
 3. **Email and spreadsheet:** usually already paid, with no change.
 4. **Optional:** job management system (usually already paid), SMS alerts (per message), and any web-developer time to add a form.
 

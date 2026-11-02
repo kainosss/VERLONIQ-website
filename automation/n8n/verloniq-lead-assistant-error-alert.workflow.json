@@ -1,0 +1,99 @@
+{
+  "name": "VERLONIQ - Lead Assistant Error Alert",
+  "nodes": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "name": "Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -260
+      ],
+      "parameters": {
+        "content": "## Error alert\nSelect this workflow in the main workflow's **Settings → Error workflow**. Set STAFF_EMAIL in \"Prepare Error Alert\" and choose the Gmail credential. It does not need to be activated.",
+        "width": 520,
+        "height": 200
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000010",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000020",
+      "name": "Prepare Error Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Formats an alert when the AI Lead Assistant workflow fails unexpectedly, so a lead is never lost silently.\n// Set STAFF_EMAIL to the same internal address as staff_notification.to in the main workflow.\nconst STAFF_EMAIL = '';\nconst e = $input.first().json || {};\nconst ex = e.execution || {};\nconst err = ex.error || {};\nif (!STAFF_EMAIL) throw new Error('Set STAFF_EMAIL in \"Prepare Error Alert\" so failures can be emailed to staff.');\nreturn [{ json: { notification: {\n  to: STAFF_EMAIL,\n  subject: '[ACTION NEEDED] VERLONIQ Lead Assistant failed - an enquiry may need manual handling',\n  body: 'The workflow \"' + ((e.workflow || {}).name || 'unknown') + '\" stopped with an error.\\n\\n' +\n    'Failed node: ' + (ex.lastNodeExecuted || 'unknown') + '\\nError: ' + String(err.message || 'unknown').slice(0, 500) + '\\n' +\n    'Execution: ' + (ex.url || ex.id || 'unknown') + '\\n\\n' +\n    'Open the execution in n8n to see the enquiry that was being processed, then handle it manually. Nothing was sent to the customer.',\n} } }];"
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000030",
+      "name": "Gmail: Alert Staff",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.notification.to }}",
+        "subject": "={{ $json.notification.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.notification.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Error Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Error Alert": {
+      "main": [
+        [
+          {
+            "node": "Gmail: Alert Staff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

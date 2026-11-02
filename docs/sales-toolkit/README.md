@@ -13,6 +13,7 @@ Everything needed to sell, scope, deliver and support VERLONIQ's first service: 
 | 5 | [Customer onboarding checklist](05-onboarding-checklist.md) | Collecting information, accounts, permissions and approvals before building |
 | 6 | [Demonstration script](06-demo-script.md) | Showing the website's AI Lead Assistant demo in five minutes |
 | 7 | [Cost structure](07-cost-structure.md) | Explaining who pays for software, AI usage and VERLONIQ's fees |
+| 8 | [AI Lead Assistant explainer](08-ai-lead-assistant-explainer.md) | Explaining what the automation does, what stays with the customer's team and what it depends on |
 | 8 | Profitability worksheet — `internal/profitability-worksheet.xlsx` (not committed) | Checking hours, costs, contingency and margin before quoting |
 | — | Internal pricing guide — `internal/pricing-guide.md` (not committed) | Suggested AUD price ranges for each package and support plan |
 
